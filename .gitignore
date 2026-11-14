@@ -1,0 +1,14 @@
+# Log và ảnh upload của khách
+scr/logs/*
+!scr/logs/.htaccess
+scr/public/uploads/*
+!scr/public/uploads/.htaccess
+!scr/public/uploads/.gitkeep
+
+# Thông tin kết nối riêng từng máy
+scr/config/config.local.php
+
+# Cá nhân
+.vscode/
+.DS_Store
+Thumbs.db
