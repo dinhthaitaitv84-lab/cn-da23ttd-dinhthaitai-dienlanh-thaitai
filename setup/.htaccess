@@ -1,0 +1,4 @@
+Require all denied
+<FilesMatch "\.(sql|sql\.php)$">
+    Require all denied
+</FilesMatch>
