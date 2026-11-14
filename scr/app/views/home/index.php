@@ -15,7 +15,6 @@ $isCustomer = ($role === 'customer');
 $isAdmin = ($role === 'admin');
 $isTechnician = ($role === 'technician');
 $isStaff = $isAdmin || $isTechnician;
-$baseUrl = defined('BASE_URL') ? BASE_URL : '/DoAn_DienLanh/scr';
 $requestUrl = $isStaff
     ? $baseUrl . ($isAdmin ? '/admin/dashboard' : '/technician/dashboard')
     : ($isLoggedIn && $isCustomer
@@ -93,7 +92,7 @@ $shortCustomerName = static function ($name) {
                 <?php endif; ?>
                 <div class="home-category-meta">
                     <span><?= (int) $category['service_count'] ?> dịch vụ</span>
-                    <a href="/DoAn_DienLanh/scr/service?category_id=<?= (int) $category['id'] ?>">Xem dịch vụ</a>
+                    <a href="<?= htmlspecialchars(url('/service?category_id=' . (int) $category['id']), ENT_QUOTES, 'UTF-8') ?>">Xem dịch vụ</a>
                 </div>
             </article>
         <?php endforeach; ?>
@@ -124,8 +123,8 @@ $shortCustomerName = static function ($name) {
                 <?php endif; ?>
                 <p class="home-service-price">Từ <?= number_format((float) $service['base_price'], 0, ',', '.') ?> đ</p>
                 <a class="button button-outline" href="<?= $isLoggedIn && $isCustomer
-                    ? '/DoAn_DienLanh/scr/request/create?service_id=' . (int) $service['id']
-                    : '/DoAn_DienLanh/scr/auth/login' ?>"><?= $isLoggedIn && $isCustomer ? 'Tạo yêu cầu' : 'Đăng nhập để gửi yêu cầu' ?></a>
+                    ? url('/request/create?service_id=' . (int) $service['id'])
+                    : url('/auth/login') ?>"><?= $isLoggedIn && $isCustomer ? 'Tạo yêu cầu' : 'Đăng nhập để gửi yêu cầu' ?></a>
             </article>
         <?php endforeach; ?>
         <?php if (empty($popularServices)): ?>

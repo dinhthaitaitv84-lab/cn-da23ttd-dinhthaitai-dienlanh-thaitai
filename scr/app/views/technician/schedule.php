@@ -1,8 +1,8 @@
 <div class="page-head">
     <div><h1>Lịch làm việc</h1><p>Lịch hẹn và các ca làm việc đã được phân công.</p></div>
-    <a class="button button-secondary" href="/DoAn_DienLanh/scr/technician/jobs">Việc của tôi</a>
+    <a class="button button-secondary" href="<?= htmlspecialchars(url('/technician/jobs'), ENT_QUOTES, 'UTF-8') ?>">Việc của tôi</a>
 </div>
-<form class="filter-card schedule-filter" method="get" action="/DoAn_DienLanh/scr/technician/schedule">
+<form class="filter-card schedule-filter" method="get" action="<?= htmlspecialchars(url('/technician/schedule'), ENT_QUOTES, 'UTF-8') ?>">
     <div class="form-group">
         <label for="date">Ngày</label>
         <input id="date" name="date" type="date" value="<?= htmlspecialchars($date, ENT_QUOTES, 'UTF-8') ?>" required>
@@ -30,7 +30,7 @@
                 <td><?= htmlspecialchars($event['customer_name'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($event['title'] ?? ($event['note'] ?? ''), ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?php if ($event['status']): ?><span class="badge badge-status badge-<?= htmlspecialchars($event['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($statusLabels[$event['status']] ?? $event['status'], ENT_QUOTES, 'UTF-8') ?></span><?php endif; ?></td>
-                <td><?php if ($event['request_id']): ?><a class="button button-secondary" href="/DoAn_DienLanh/scr/technician/detail/<?= (int) $event['request_id'] ?>">Chi tiết</a><?php endif; ?></td>
+                <td><?php if ($event['request_id']): ?><a class="button button-secondary" href="<?= htmlspecialchars(url('/technician/detail/' . (int) $event['request_id']), ENT_QUOTES, 'UTF-8') ?>">Chi tiết</a><?php endif; ?></td>
             </tr>
         <?php endforeach; ?>
         <?php if (empty($events)): ?><tr><td colspan="7" class="empty-state">Không có lịch trong khoảng thời gian này.</td></tr><?php endif; ?>

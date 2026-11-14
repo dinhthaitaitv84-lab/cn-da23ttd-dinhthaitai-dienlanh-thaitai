@@ -10,7 +10,7 @@ class AdminController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/admin/dashboard');
+            $this->redirect(url('/admin/dashboard'));
         }
     }
 
@@ -99,7 +99,7 @@ class AdminController extends Controller
         $request = $this->model('AdminRequestModel')->find((int) $id);
         if (!$request) {
             $this->setFlash('error', 'Không tìm thấy yêu cầu.');
-            $this->redirect('/DoAn_DienLanh/scr/admin/requests');
+            $this->redirect(url('/admin/requests'));
         }
         $preferred = strtotime($request['preferred_time']);
         $this->view('admin/requests/detail', [
@@ -175,7 +175,7 @@ class AdminController extends Controller
         } else {
             $this->setFlash('success', 'Đã cập nhật mức ưu tiên.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/admin/requestDetail/' . (int) $id);
+        $this->redirect(url('/admin/requestDetail/' . (int) $id));
     }
 
     public function requestAssign($id = 0)
@@ -202,7 +202,7 @@ class AdminController extends Controller
         ];
         $message = $messages[$result] ?? ['error', 'Không thể phân công yêu cầu.'];
         $this->setFlash($message[0], $message[1]);
-        $this->redirect('/DoAn_DienLanh/scr/admin/requestDetail/' . (int) $id);
+        $this->redirect(url('/admin/requestDetail/' . (int) $id));
     }
 
     public function requestCancel($id = 0)
@@ -212,7 +212,7 @@ class AdminController extends Controller
         $reason = trim($_POST['reason'] ?? '');
         if ($reason === '' || mb_strlen($reason) > 1000) {
             $this->setFlash('error', 'Vui lòng nhập lý do hủy (tối đa 1000 ký tự).');
-            $this->redirect('/DoAn_DienLanh/scr/admin/requestDetail/' . (int) $id);
+            $this->redirect(url('/admin/requestDetail/' . (int) $id));
         }
         $result = $this->model('AdminRequestModel')->cancel(
             (int) $id,
@@ -226,7 +226,7 @@ class AdminController extends Controller
                 ? 'Yêu cầu đã hoàn thành hoặc đã hủy.'
                 : 'Không tìm thấy yêu cầu.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/admin/requestDetail/' . (int) $id);
+        $this->redirect(url('/admin/requestDetail/' . (int) $id));
     }
 
     public function categories()
@@ -253,7 +253,7 @@ class AdminController extends Controller
                 $this->model('CategoryModel')->create($name, $description);
                 $this->setFlash('success', 'Đã thêm nhóm dịch vụ.');
             }
-            $this->redirect('/DoAn_DienLanh/scr/admin/categories');
+            $this->redirect(url('/admin/categories'));
         }
         $this->view('admin/category-form', ['title' => 'Thêm nhóm dịch vụ', 'category' => null]);
     }
@@ -265,7 +265,7 @@ class AdminController extends Controller
         $category = $model->find((int) $id);
         if (!$category) {
             $this->setFlash('error', 'Không tìm thấy nhóm dịch vụ.');
-            $this->redirect('/DoAn_DienLanh/scr/admin/categories');
+            $this->redirect(url('/admin/categories'));
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->verifyPost();
@@ -277,7 +277,7 @@ class AdminController extends Controller
                 $model->update((int) $id, $name, $description);
                 $this->setFlash('success', 'Đã cập nhật nhóm dịch vụ.');
             }
-            $this->redirect('/DoAn_DienLanh/scr/admin/categories');
+            $this->redirect(url('/admin/categories'));
         }
         $this->view('admin/category-form', ['title' => 'Sửa nhóm dịch vụ', 'category' => $category]);
     }
@@ -288,7 +288,7 @@ class AdminController extends Controller
         $this->verifyPost();
         $this->model('CategoryModel')->toggle((int) $id);
         $this->setFlash('success', 'Đã cập nhật trạng thái nhóm dịch vụ.');
-        $this->redirect('/DoAn_DienLanh/scr/admin/categories');
+        $this->redirect(url('/admin/categories'));
     }
 
     public function categoryDelete($id = 0)
@@ -299,7 +299,7 @@ class AdminController extends Controller
         $this->setFlash($deleted ? 'success' : 'error', $deleted
             ? 'Đã xóa nhóm dịch vụ.'
             : 'Không thể xóa nhóm đang có dịch vụ.');
-        $this->redirect($this->paginationReturnUrl('/DoAn_DienLanh/scr/admin/categories'));
+        $this->redirect(url($this->paginationReturnUrl('/admin/categories')));
     }
 
     public function services()
@@ -329,11 +329,11 @@ class AdminController extends Controller
             $data = $this->serviceData();
             if ($data === false) {
                 $this->setFlash('error', 'Vui lòng kiểm tra các thông tin dịch vụ.');
-                $this->redirect('/DoAn_DienLanh/scr/admin/serviceCreate');
+                $this->redirect(url('/admin/serviceCreate'));
             }
             $model->create($data);
             $this->setFlash('success', 'Đã thêm dịch vụ.');
-            $this->redirect('/DoAn_DienLanh/scr/admin/services');
+            $this->redirect(url('/admin/services'));
         }
         $this->view('admin/service-form', [
             'title' => 'Thêm dịch vụ',
@@ -349,18 +349,18 @@ class AdminController extends Controller
         $service = $model->find((int) $id);
         if (!$service) {
             $this->setFlash('error', 'Không tìm thấy dịch vụ.');
-            $this->redirect('/DoAn_DienLanh/scr/admin/services');
+            $this->redirect(url('/admin/services'));
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->verifyPost();
             $data = $this->serviceData();
             if ($data === false) {
                 $this->setFlash('error', 'Vui lòng kiểm tra các thông tin dịch vụ.');
-                $this->redirect('/DoAn_DienLanh/scr/admin/serviceEdit/' . (int) $id);
+                $this->redirect(url('/admin/serviceEdit/' . (int) $id));
             }
             $model->update((int) $id, $data);
             $this->setFlash('success', 'Đã cập nhật dịch vụ.');
-            $this->redirect('/DoAn_DienLanh/scr/admin/services');
+            $this->redirect(url('/admin/services'));
         }
         $this->view('admin/service-form', [
             'title' => 'Sửa dịch vụ',
@@ -375,7 +375,7 @@ class AdminController extends Controller
         $this->verifyPost();
         $this->model('ServiceModel')->toggle((int) $id);
         $this->setFlash('success', 'Đã cập nhật trạng thái dịch vụ.');
-        $this->redirect('/DoAn_DienLanh/scr/admin/services');
+        $this->redirect(url('/admin/services'));
     }
 
     public function serviceDelete($id = 0)
@@ -386,7 +386,7 @@ class AdminController extends Controller
         $this->setFlash($deleted ? 'success' : 'error', $deleted
             ? 'Đã xóa dịch vụ.'
             : 'Không thể xóa dịch vụ đã có yêu cầu.');
-        $this->redirect($this->paginationReturnUrl('/DoAn_DienLanh/scr/admin/services'));
+        $this->redirect(url($this->paginationReturnUrl('/admin/services')));
     }
 
     private function serviceData()

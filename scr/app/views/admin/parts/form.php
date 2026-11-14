@@ -1,12 +1,12 @@
 <?php $editing = is_array($part); ?>
 <div class="page-head">
     <div><h1><?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') ?></h1><p>Cập nhật thông tin, giá và tồn kho linh kiện.</p></div>
-    <a class="button button-secondary" href="/DoAn_DienLanh/scr/part/index">Về danh sách</a>
+    <a class="button button-secondary" href="<?= htmlspecialchars(url('/part/index'), ENT_QUOTES, 'UTF-8') ?>">Về danh sách</a>
 </div>
 <div class="admin-form-layout">
     <section class="card admin-form">
         <div class="admin-form-title"><h2>Thông tin linh kiện</h2></div>
-        <form method="post" action="<?= $editing ? '/DoAn_DienLanh/scr/part/edit/' . (int) $part['id'] : '/DoAn_DienLanh/scr/part/create' ?>">
+        <form method="post" action="<?= htmlspecialchars($editing ? url('/part/edit/' . (int) $part['id']) : url('/part/create'), ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <div class="form-group">
                 <label for="part-name">Tên linh kiện</label>
@@ -37,7 +37,7 @@
             </div>
             <div class="form-actions">
                 <button type="submit">Lưu</button>
-                <a class="button button-secondary" href="/DoAn_DienLanh/scr/part/index">Hủy</a>
+                <a class="button button-secondary" href="<?= htmlspecialchars(url('/part/index'), ENT_QUOTES, 'UTF-8') ?>">Hủy</a>
             </div>
         </form>
     </section>

@@ -1,6 +1,6 @@
 <div class="page-head">
     <div><h1><?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') ?></h1><p>Cập nhật thông tin và thời lượng dịch vụ.</p></div>
-    <a class="button button-secondary" href="/DoAn_DienLanh/scr/admin/services">Về danh sách</a>
+    <a class="button button-secondary" href="<?= htmlspecialchars(url('/admin/services'), ENT_QUOTES, 'UTF-8') ?>">Về danh sách</a>
 </div>
 <div class="admin-form-layout">
     <section class="card admin-form">
@@ -34,7 +34,7 @@
             </div>
             <div class="form-actions">
                 <button type="submit">Lưu</button>
-                <a class="button button-secondary" href="/DoAn_DienLanh/scr/admin/services">Hủy</a>
+                <a class="button button-secondary" href="<?= htmlspecialchars(url('/admin/services'), ENT_QUOTES, 'UTF-8') ?>">Hủy</a>
             </div>
         </form>
     </section>

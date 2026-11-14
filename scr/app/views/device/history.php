@@ -2,9 +2,9 @@
     <div class="admin-heading">
         <h1>Lịch sử thiết bị</h1>
         <?php if (($_SESSION['user']['role'] ?? '') === 'customer'): ?>
-            <a class="button button-light" href="/DoAn_DienLanh/scr/device/index">Thiết bị</a>
+            <a class="button button-light" href="<?= htmlspecialchars(url('/device/index'), ENT_QUOTES, 'UTF-8') ?>">Thiết bị</a>
         <?php else: ?>
-            <a class="button button-light" href="/DoAn_DienLanh/scr/customer/detail/<?= (int) $device['customer_id'] ?>">Quay lại khách hàng</a>
+            <a class="button button-light" href="<?= htmlspecialchars(url('/customer/detail/' . (int) $device['customer_id']), ENT_QUOTES, 'UTF-8') ?>">Quay lại khách hàng</a>
         <?php endif; ?>
     </div>
     <p class="page-description">Theo dõi các lần sửa chữa và thông tin bảo hành của thiết bị.</p>
@@ -43,7 +43,7 @@
         ?>
         <article class="card repair-history-card">
             <div class="admin-heading">
-                <h3><a href="/DoAn_DienLanh/scr/request/detail/<?= (int) $repair['id'] ?>"><?= htmlspecialchars($repair['code'], ENT_QUOTES, 'UTF-8') ?></a></h3>
+                <h3><a href="<?= htmlspecialchars(url('/request/detail/' . (int) $repair['id']), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($repair['code'], ENT_QUOTES, 'UTF-8') ?></a></h3>
                 <span class="badge badge-status badge-<?= htmlspecialchars($repair['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($statusLabels[$repair['status']] ?? $repair['status'], ENT_QUOTES, 'UTF-8') ?></span>
             </div>
             <p><strong>Ngày:</strong> <?= htmlspecialchars(date('d/m/Y H:i', strtotime($completionDate)), ENT_QUOTES, 'UTF-8') ?></p>

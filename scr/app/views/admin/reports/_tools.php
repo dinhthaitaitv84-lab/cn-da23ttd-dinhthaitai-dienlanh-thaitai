@@ -4,18 +4,18 @@
         <p>Kỳ báo cáo: <?= htmlspecialchars(date('d/m/Y', strtotime($filters['from'])), ENT_QUOTES, 'UTF-8') ?> – <?= htmlspecialchars(date('d/m/Y', strtotime($filters['to'])), ENT_QUOTES, 'UTF-8') ?></p>
     </div>
     <div class="page-head-actions">
-        <a class="button button-secondary" href="/DoAn_DienLanh/scr/report/export/<?= htmlspecialchars($reportType, ENT_QUOTES, 'UTF-8') ?>?from=<?= rawurlencode($filters['from']) ?>&amp;to=<?= rawurlencode($filters['to']) ?>">Xuất CSV</a>
+        <a class="button button-secondary" href="<?= htmlspecialchars(url('/report/export/' . rawurlencode($reportType) . '?from=' . rawurlencode($filters['from']) . '&to=' . rawurlencode($filters['to'])), ENT_QUOTES, 'UTF-8') ?>">Xuất CSV</a>
         <button class="button button-secondary" type="button" data-print-report>In báo cáo</button>
     </div>
 </div>
 <nav class="report-tabs" aria-label="Các báo cáo">
-    <a class="<?= $reportType === 'index' ? 'active' : '' ?>" href="/DoAn_DienLanh/scr/report/index">Tổng quan</a>
-    <a class="<?= $reportType === 'services' ? 'active' : '' ?>" href="/DoAn_DienLanh/scr/report/services">Dịch vụ</a>
-    <a class="<?= $reportType === 'technicians' ? 'active' : '' ?>" href="/DoAn_DienLanh/scr/report/technicians">Kỹ thuật viên</a>
-    <a class="<?= $reportType === 'status' ? 'active' : '' ?>" href="/DoAn_DienLanh/scr/report/status">Trạng thái</a>
-    <a class="<?= $reportType === 'parts' ? 'active' : '' ?>" href="/DoAn_DienLanh/scr/report/parts">Linh kiện</a>
+    <a class="<?= $reportType === 'index' ? 'active' : '' ?>" href="<?= htmlspecialchars(url('/report/index'), ENT_QUOTES, 'UTF-8') ?>">Tổng quan</a>
+    <a class="<?= $reportType === 'services' ? 'active' : '' ?>" href="<?= htmlspecialchars(url('/report/services'), ENT_QUOTES, 'UTF-8') ?>">Dịch vụ</a>
+    <a class="<?= $reportType === 'technicians' ? 'active' : '' ?>" href="<?= htmlspecialchars(url('/report/technicians'), ENT_QUOTES, 'UTF-8') ?>">Kỹ thuật viên</a>
+    <a class="<?= $reportType === 'status' ? 'active' : '' ?>" href="<?= htmlspecialchars(url('/report/status'), ENT_QUOTES, 'UTF-8') ?>">Trạng thái</a>
+    <a class="<?= $reportType === 'parts' ? 'active' : '' ?>" href="<?= htmlspecialchars(url('/report/parts'), ENT_QUOTES, 'UTF-8') ?>">Linh kiện</a>
 </nav>
-<form class="filter-card report-filters" method="get" action="/DoAn_DienLanh/scr/report/<?= htmlspecialchars($reportType, ENT_QUOTES, 'UTF-8') ?>">
+<form class="filter-card report-filters" method="get" action="<?= htmlspecialchars(url('/report/' . rawurlencode($reportType)), ENT_QUOTES, 'UTF-8') ?>">
     <div class="form-group">
         <label for="report-from">Từ ngày</label>
         <input id="report-from" type="date" name="from" value="<?= htmlspecialchars($filters['from'], ENT_QUOTES, 'UTF-8') ?>" required>

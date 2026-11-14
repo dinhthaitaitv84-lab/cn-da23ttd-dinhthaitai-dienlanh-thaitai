@@ -6,7 +6,7 @@
 
     <section class="card device-form-card">
         <h2>Thêm thiết bị</h2>
-        <form method="post" action="/DoAn_DienLanh/scr/device/store">
+        <form method="post" action="<?= htmlspecialchars(url('/device/store'), ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <div class="device-form-grid">
                 <div class="form-group">
@@ -30,7 +30,7 @@
     <div class="device-list">
         <?php foreach ($devices as $device): ?>
             <section class="card device-card">
-                <form method="post" action="/DoAn_DienLanh/scr/device/update/<?= (int) $device['id'] ?>">
+                <form method="post" action="<?= htmlspecialchars(url('/device/update/' . (int) $device['id']), ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                     <div class="device-form-grid">
                         <div class="form-group">
@@ -52,8 +52,8 @@
                     <button type="submit">Lưu thay đổi</button>
                 </form>
                 <div class="device-actions">
-                        <a class="button button-secondary" href="/DoAn_DienLanh/scr/device/detail/<?= (int) $device['id'] ?>">Lịch sử sửa chữa</a>
-                        <form method="post" action="/DoAn_DienLanh/scr/device/delete/<?= (int) $device['id'] ?>" data-confirm="Quý khách xác nhận xóa thiết bị này?">
+                        <a class="button button-secondary" href="<?= htmlspecialchars(url('/device/detail/' . (int) $device['id']), ENT_QUOTES, 'UTF-8') ?>">Lịch sử sửa chữa</a>
+                        <form method="post" action="<?= htmlspecialchars(url('/device/delete/' . (int) $device['id']), ENT_QUOTES, 'UTF-8') ?>" data-confirm="Quý khách xác nhận xóa thiết bị này?">
                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                             <input type="hidden" name="page" value="<?= (int) $page ?>">
                             <button class="button-danger" type="submit">Xóa</button>

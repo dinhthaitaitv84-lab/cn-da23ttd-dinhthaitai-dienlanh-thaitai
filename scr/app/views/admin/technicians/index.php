@@ -1,8 +1,8 @@
 <div class="page-head">
     <div><h1>Quản lý kỹ thuật viên</h1><p>Quản lý hồ sơ, trạng thái làm việc và tài khoản của đội ngũ.</p></div>
-    <a class="button" href="/DoAn_DienLanh/scr/technician/create">Thêm kỹ thuật viên</a>
+    <a class="button" href="<?= htmlspecialchars(url('/technician/create'), ENT_QUOTES, 'UTF-8') ?>">Thêm kỹ thuật viên</a>
 </div>
-<form class="filter-card technician-search" method="get" action="/DoAn_DienLanh/scr/technician/index">
+<form class="filter-card technician-search" method="get" action="<?= htmlspecialchars(url('/technician/index'), ENT_QUOTES, 'UTF-8') ?>">
     <div class="form-group">
         <label for="search">Tìm theo tên</label>
         <div class="search-input"><?= icon('search') ?><input id="search" name="search" value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>" maxlength="100"></div>
@@ -23,13 +23,13 @@
                 <td><span class="badge <?= (int) $technician['account_status'] === 1 ? 'badge-account-active' : 'badge-account-locked' ?>"><?= (int) $technician['account_status'] === 1 ? 'Hoạt động' : 'Đã khóa' ?></span></td>
                 <td class="text-center"><strong><?= (int) $technician['active_requests'] ?></strong></td>
                 <td class="table-actions technician-actions text-actions">
-                    <a class="text-action" href="/DoAn_DienLanh/scr/technician/edit/<?= (int) $technician['id'] ?>">Sửa</a>
-                    <form method="post" action="/DoAn_DienLanh/scr/technician/accountStatus/<?= (int) $technician['id'] ?>">
+                    <a class="text-action" href="<?= htmlspecialchars(url('/technician/edit/' . (int) $technician['id']), ENT_QUOTES, 'UTF-8') ?>">Sửa</a>
+                    <form method="post" action="<?= htmlspecialchars(url('/technician/accountStatus/' . (int) $technician['id']), ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="status" value="<?= (int) $technician['account_status'] === 1 ? 0 : 1 ?>">
                         <button class="text-action text-action-danger" type="submit"><?= (int) $technician['account_status'] === 1 ? 'Khóa' : 'Mở' ?></button>
                     </form>
-                    <form method="post" action="/DoAn_DienLanh/scr/technician/delete/<?= (int) $technician['id'] ?>" data-confirm="Xóa kỹ thuật viên này? Chỉ xóa được khi chưa được phân công yêu cầu.">
+                    <form method="post" action="<?= htmlspecialchars(url('/technician/delete/' . (int) $technician['id']), ENT_QUOTES, 'UTF-8') ?>" data-confirm="Xóa kỹ thuật viên này? Chỉ xóa được khi chưa được phân công yêu cầu.">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="page" value="<?= (int) $page ?>">
                         <input type="hidden" name="search" value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>">
@@ -55,7 +55,7 @@
         </div>
         <button class="button button-secondary" type="button" data-close-technician-status>Đóng</button>
     </div>
-    <form class="technician-status-form" method="post" action="/DoAn_DienLanh/scr/technician/status/" data-action-prefix="/DoAn_DienLanh/scr/technician/status/">
+    <form class="technician-status-form" method="post" action="<?= htmlspecialchars(url('/technician/status/'), ENT_QUOTES, 'UTF-8') ?>" data-action-prefix="<?= htmlspecialchars(url('/technician/status/'), ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
         <fieldset class="state-options">
             <legend>Trạng thái làm việc</legend>

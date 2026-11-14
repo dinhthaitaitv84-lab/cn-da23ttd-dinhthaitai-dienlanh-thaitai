@@ -1,7 +1,7 @@
 <section class="request-detail">
     <div class="page-head">
         <div><h1>Yêu cầu <?= htmlspecialchars($request['code'], ENT_QUOTES, 'UTF-8') ?></h1><p><?= htmlspecialchars($request['title'], ENT_QUOTES, 'UTF-8') ?></p></div>
-        <a class="button button-secondary" href="/DoAn_DienLanh/scr/admin/requests">Về danh sách</a>
+        <a class="button button-secondary" href="<?= htmlspecialchars(url('/admin/requests'), ENT_QUOTES, 'UTF-8') ?>">Về danh sách</a>
     </div>
     <div class="request-detail-layout<?= in_array($request['status'], ['completed', 'cancelled'], true) ? ' is-closed' : '' ?>">
     <div class="request-detail-primary">
@@ -28,8 +28,8 @@
             <h2>Ảnh yêu cầu</h2>
             <div class="request-gallery">
                 <?php foreach ($request['images'] as $image): ?>
-                    <button class="gallery-image js-image-modal" type="button" data-image="<?= htmlspecialchars('/DoAn_DienLanh/scr/' . ltrim($image, '/\\'), ENT_QUOTES, 'UTF-8') ?>" aria-label="Phóng to ảnh">
-                        <img src="<?= htmlspecialchars('/DoAn_DienLanh/scr/' . ltrim($image, '/\\'), ENT_QUOTES, 'UTF-8') ?>" alt="Ảnh yêu cầu <?= htmlspecialchars($request['code'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
+                    <button class="gallery-image js-image-modal" type="button" data-image="<?= htmlspecialchars(url('/' . ltrim($image, '/\\')), ENT_QUOTES, 'UTF-8') ?>" aria-label="Phóng to ảnh">
+                        <img src="<?= htmlspecialchars(url('/' . ltrim($image, '/\\')), ENT_QUOTES, 'UTF-8') ?>" alt="Ảnh yêu cầu <?= htmlspecialchars($request['code'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
                     </button>
                 <?php endforeach; ?>
             </div>
@@ -99,7 +99,7 @@
     <aside class="request-detail-sidebar">
     <div class="admin-action-grid">
         <?php if (!in_array($request['status'], ['completed', 'cancelled'], true)): ?>
-            <form class="card admin-action-card" method="post" action="/DoAn_DienLanh/scr/admin/requestPriority/<?= (int) $request['id'] ?>">
+            <form class="card admin-action-card" method="post" action="<?= htmlspecialchars(url('/admin/requestPriority/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                 <h2>Đổi mức ưu tiên</h2>
                 <div class="form-group">
@@ -113,7 +113,7 @@
                 <button type="submit">Cập nhật ưu tiên</button>
             </form>
 
-            <form class="card admin-action-card" method="post" action="/DoAn_DienLanh/scr/admin/requestAssign/<?= (int) $request['id'] ?>" data-schedule-form data-duration="<?= (int) $request['est_minutes'] ?>">
+            <form class="card admin-action-card" method="post" action="<?= htmlspecialchars(url('/admin/requestAssign/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>" data-schedule-form data-duration="<?= (int) $request['est_minutes'] ?>">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                 <h2><?= empty($request['technician_id']) ? 'Phân công kỹ thuật viên' : 'Phân công lại' ?></h2>
                 <div class="form-group">
@@ -134,7 +134,7 @@
         <?php endif; ?>
     </div>
     <?php if (!in_array($request['status'], ['completed', 'cancelled'], true)): ?>
-        <form class="card admin-action-card cancel-request-form" method="post" action="/DoAn_DienLanh/scr/admin/requestCancel/<?= (int) $request['id'] ?>" data-confirm="Xác nhận hủy yêu cầu này?">
+        <form class="card admin-action-card cancel-request-form" method="post" action="<?= htmlspecialchars(url('/admin/requestCancel/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>" data-confirm="Xác nhận hủy yêu cầu này?">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <h2>Hủy yêu cầu</h2>
             <div class="form-group"><label for="reason">Lý do hủy</label><textarea id="reason" name="reason" rows="3" maxlength="1000" required></textarea></div>

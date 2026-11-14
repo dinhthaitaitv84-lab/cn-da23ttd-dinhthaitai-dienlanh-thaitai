@@ -40,7 +40,7 @@
                 <h2>Doanh thu</h2>
                 <p>7 ngày gần nhất · Đơn vị: đồng</p>
             </div>
-            <a href="/DoAn_DienLanh/scr/report/index">Xem báo cáo</a>
+            <a href="<?= htmlspecialchars(url('/report/index'), ENT_QUOTES, 'UTF-8') ?>">Xem báo cáo</a>
         </div>
         <div class="chart-container">
             <canvas class="report-chart" data-chart="bar" data-series="<?= htmlspecialchars(json_encode($dashboardRevenue['items'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8') ?>" aria-label="Doanh thu bảy ngày gần nhất" role="img"></canvas>
@@ -71,7 +71,7 @@
         <?php else: ?>
             <p class="empty-state">Chưa có việc hoàn thành trong 7 ngày gần nhất.</p>
         <?php endif; ?>
-        <a class="dashboard-card-link" href="/DoAn_DienLanh/scr/technician/index">Xem tất cả kỹ thuật viên</a>
+        <a class="dashboard-card-link" href="<?= htmlspecialchars(url('/technician/index'), ENT_QUOTES, 'UTF-8') ?>">Xem tất cả kỹ thuật viên</a>
     </article>
 </section>
 
@@ -80,11 +80,11 @@
         <span class="dashboard-callout-label">CẦN XỬ LÝ</span>
         <h2><?= (int) $stats['pending'] ?> yêu cầu đang chờ tiếp nhận</h2>
         <p>Tiếp nhận và phân công kỹ thuật viên để bắt đầu xử lý.</p>
-        <a class="button" href="/DoAn_DienLanh/scr/admin/requests?status=pending">Xem yêu cầu</a>
+        <a class="button" href="<?= htmlspecialchars(url('/admin/requests?status=pending'), ENT_QUOTES, 'UTF-8') ?>">Xem yêu cầu</a>
     </article>
     <article class="card dashboard-quick-links">
         <h2>Truy cập nhanh</h2>
-        <a href="/DoAn_DienLanh/scr/admin/schedule"><span><?= icon('calendar') ?>Lịch kỹ thuật viên</span><?= icon('chevron-right') ?></a>
-        <a href="/DoAn_DienLanh/scr/report/index"><span><?= icon('chart') ?>Báo cáo tổng quan</span><?= icon('chevron-right') ?></a>
+        <a href="<?= htmlspecialchars(url('/admin/schedule'), ENT_QUOTES, 'UTF-8') ?>"><span><?= icon('calendar') ?>Lịch kỹ thuật viên</span><?= icon('chevron-right') ?></a>
+        <a href="<?= htmlspecialchars(url('/report/index'), ENT_QUOTES, 'UTF-8') ?>"><span><?= icon('chart') ?>Báo cáo tổng quan</span><?= icon('chevron-right') ?></a>
     </article>
 </section>

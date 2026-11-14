@@ -1,7 +1,7 @@
 <section>
     <div class="page-head">
         <div><h1>Khách hàng: <?= htmlspecialchars($customer['full_name'], ENT_QUOTES, 'UTF-8') ?></h1><p>Thông tin tài khoản, thiết bị và lịch sử sửa chữa.</p></div>
-        <a class="button button-secondary" href="/DoAn_DienLanh/scr/customer/index">Về danh sách</a>
+        <a class="button button-secondary" href="<?= htmlspecialchars(url('/customer/index'), ENT_QUOTES, 'UTF-8') ?>">Về danh sách</a>
     </div>
     <div class="card customer-profile info-grid">
         <p><strong>Email:</strong> <?= htmlspecialchars($customer['email'], ENT_QUOTES, 'UTF-8') ?></p>
@@ -9,7 +9,7 @@
         <p><strong>Địa chỉ:</strong> <?= htmlspecialchars($customer['address'] ?? 'Chưa cập nhật', ENT_QUOTES, 'UTF-8') ?></p>
         <p><strong>Ngày đăng ký:</strong> <?= htmlspecialchars(date('d/m/Y', strtotime($customer['created_at'])), ENT_QUOTES, 'UTF-8') ?></p>
     </div>
-    <form class="card customer-reset-password" method="post" action="/DoAn_DienLanh/scr/customer/resetPassword/<?= (int) $customer['id'] ?>">
+    <form class="card customer-reset-password" method="post" action="<?= htmlspecialchars(url('/customer/resetPassword/' . (int) $customer['id']), ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
         <h2>Đặt lại mật khẩu khách hàng</h2>
         <div class="form-group">
@@ -29,7 +29,7 @@
                     <td><?= htmlspecialchars($device['category_name'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?= htmlspecialchars($device['name'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?= htmlspecialchars(trim(($device['brand'] ?? '') . ' ' . ($device['model'] ?? '')), ENT_QUOTES, 'UTF-8') ?></td>
-                    <td><a class="button button-secondary" href="/DoAn_DienLanh/scr/customer/device/<?= (int) $device['id'] ?>">Xem lịch sử</a></td>
+                    <td><a class="button button-secondary" href="<?= htmlspecialchars(url('/customer/device/' . (int) $device['id']), ENT_QUOTES, 'UTF-8') ?>">Xem lịch sử</a></td>
                 </tr>
             <?php endforeach; ?>
             <?php if (empty($customer['devices'])): ?><tr><td colspan="4" class="empty-state">Khách hàng chưa đăng ký thiết bị.</td></tr><?php endif; ?>
@@ -56,11 +56,11 @@
                 }
                 ?>
                 <tr>
-                    <td><a href="/DoAn_DienLanh/scr/admin/requestDetail/<?= (int) $request['id'] ?>"><?= htmlspecialchars($request['code'], ENT_QUOTES, 'UTF-8') ?></a></td>
+                    <td><a href="<?= htmlspecialchars(url('/admin/requestDetail/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($request['code'], ENT_QUOTES, 'UTF-8') ?></a></td>
                     <td><?= htmlspecialchars($request['service_name'], ENT_QUOTES, 'UTF-8') ?></td>
                     <td>
                         <?php if ($request['device_id']): ?>
-                            <a href="/DoAn_DienLanh/scr/customer/device/<?= (int) $request['device_id'] ?>"><?= htmlspecialchars(trim(($request['device_brand'] ?? '') . ' ' . ($request['device_name'] ?? '') . ' ' . ($request['device_model'] ?? '')), ENT_QUOTES, 'UTF-8') ?></a>
+                            <a href="<?= htmlspecialchars(url('/customer/device/' . (int) $request['device_id']), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(trim(($request['device_brand'] ?? '') . ' ' . ($request['device_name'] ?? '') . ' ' . ($request['device_model'] ?? '')), ENT_QUOTES, 'UTF-8') ?></a>
                         <?php else: ?>—<?php endif; ?>
                     </td>
                     <td><span class="badge badge-status badge-<?= htmlspecialchars($request['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($statusLabels[$request['status']] ?? $request['status'], ENT_QUOTES, 'UTF-8') ?></span></td>

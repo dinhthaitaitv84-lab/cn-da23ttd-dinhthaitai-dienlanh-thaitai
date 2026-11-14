@@ -4,7 +4,7 @@
             <h1>Gửi yêu cầu dịch vụ</h1>
             <p>Chọn dịch vụ, mô tả thiết bị và thời gian bạn mong muốn.</p>
         </div>
-        <form method="post" action="/DoAn_DienLanh/scr/request/store" enctype="multipart/form-data" id="request-form">
+        <form method="post" action="<?= htmlspecialchars(url('/request/store'), ENT_QUOTES, 'UTF-8') ?>" enctype="multipart/form-data" id="request-form">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
 
             <section class="request-form-section">

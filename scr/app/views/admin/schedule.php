@@ -12,7 +12,7 @@ foreach ($schedules as $schedule) {
         <strong><?= htmlspecialchars($weekStart->format('d/m/Y'), ENT_QUOTES, 'UTF-8') ?> – <?= htmlspecialchars($weekEnd->format('d/m/Y'), ENT_QUOTES, 'UTF-8') ?></strong>
         <a class="button button-secondary" href="?week=<?= htmlspecialchars($nextWeek, ENT_QUOTES, 'UTF-8') ?>&amp;technician_id=<?= (int) $technicianId ?>">Tuần sau</a>
     </div>
-    <form class="filter-card" method="get" action="/DoAn_DienLanh/scr/admin/schedule">
+    <form class="filter-card" method="get" action="<?= htmlspecialchars(url('/admin/schedule'), ENT_QUOTES, 'UTF-8') ?>">
         <input type="hidden" name="week" value="<?= htmlspecialchars($weekStart->format('Y-m-d'), ENT_QUOTES, 'UTF-8') ?>">
         <div class="form-group">
             <label for="schedule-technician">Kỹ thuật viên</label>
@@ -41,7 +41,7 @@ foreach ($schedules as $schedule) {
                             <span><?= htmlspecialchars($schedule['technician_phone'], ENT_QUOTES, 'UTF-8') ?></span>
                         <?php endif; ?>
                         <?php if ($schedule['request_id']): ?>
-                            <p><a href="/DoAn_DienLanh/scr/admin/requestDetail/<?= (int) $schedule['request_id'] ?>"><?= htmlspecialchars($schedule['request_code'], ENT_QUOTES, 'UTF-8') ?> — <?= htmlspecialchars($schedule['request_title'], ENT_QUOTES, 'UTF-8') ?></a></p>
+                            <p><a href="<?= htmlspecialchars(url('/admin/requestDetail/' . (int) $schedule['request_id']), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($schedule['request_code'], ENT_QUOTES, 'UTF-8') ?> — <?= htmlspecialchars($schedule['request_title'], ENT_QUOTES, 'UTF-8') ?></a></p>
                         <?php else: ?>
                             <p><?= htmlspecialchars($schedule['note'] ?? 'Ca làm việc', ENT_QUOTES, 'UTF-8') ?></p>
                         <?php endif; ?>

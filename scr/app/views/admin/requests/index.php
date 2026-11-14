@@ -1,7 +1,7 @@
 <div class="page-head">
     <div><h1>Điều phối yêu cầu</h1><p>Theo dõi trạng thái, mức ưu tiên và lịch phân công.</p></div>
 </div>
-<form class="filter-card" method="get" action="/DoAn_DienLanh/scr/admin/requests">
+<form class="filter-card" method="get" action="<?= htmlspecialchars(url('/admin/requests'), ENT_QUOTES, 'UTF-8') ?>">
     <div class="form-group">
         <label for="request-search">Tìm mã / khách hàng</label>
         <input id="request-search" name="search" value="<?= htmlspecialchars($filters['search'], ENT_QUOTES, 'UTF-8') ?>" maxlength="100">
@@ -58,7 +58,7 @@
                 <td><span class="badge badge-status badge-<?= htmlspecialchars($item['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($statuses[$item['status']] ?? $item['status'], ENT_QUOTES, 'UTF-8') ?></span></td>
                 <td><?= htmlspecialchars($item['technician_name'] ?? 'Chưa phân công', ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($item['created_at'])), ENT_QUOTES, 'UTF-8') ?></td>
-                <td><a class="button button-secondary" href="/DoAn_DienLanh/scr/admin/requestDetail/<?= (int) $item['id'] ?>">Chi tiết</a></td>
+                <td><a class="button button-secondary" href="<?= htmlspecialchars(url('/admin/requestDetail/' . (int) $item['id']), ENT_QUOTES, 'UTF-8') ?>">Chi tiết</a></td>
             </tr>
         <?php endforeach; ?>
         <?php if (empty($requests)): ?><tr><td colspan="8" class="empty-state">Không tìm thấy yêu cầu.</td></tr><?php endif; ?>

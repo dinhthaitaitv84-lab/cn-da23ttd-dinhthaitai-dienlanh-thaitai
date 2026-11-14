@@ -11,11 +11,16 @@ ini_set('session.use_strict_mode', '1');
 ini_set('session.use_only_cookies', '1');
 ini_set('session.cookie_httponly', '1');
 ini_set('session.cookie_samesite', 'Lax');
-ini_set('session.cookie_secure', !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' ? '1' : '0');
+$forwardedProto = strtolower(trim(explode(',', (string) ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? ''))[0]));
+$isHttps = (!empty($_SERVER['HTTPS']) && strtolower((string) $_SERVER['HTTPS']) !== 'off')
+    || $forwardedProto === 'https';
+$basePath = parse_url(BASE_URL, PHP_URL_PATH);
+session_name('DienLanhSession');
+ini_set('session.cookie_secure', $isHttps ? '1' : '0');
 session_set_cookie_params([
     'lifetime' => 0,
-    'path' => BASE_URL . '/',
-    'secure' => !empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off',
+    'path' => is_string($basePath) && $basePath !== '' ? rtrim($basePath, '/') . '/' : '/',
+    'secure' => $isHttps,
     'httponly' => true,
     'samesite' => 'Lax',
 ]);
@@ -35,22 +40,13 @@ set_error_handler(function ($severity, $message, $file, $line) {
 
 set_exception_handler(function ($exception) {
     restore_error_handler();
-    $logDirectory = __DIR__ . DIRECTORY_SEPARATOR . 'logs';
-    if (!is_dir($logDirectory) && !@mkdir($logDirectory, 0750, true) && !is_dir($logDirectory)) {
-        error_log('Unable to create application error log directory.');
-    } else {
-        $message = sprintf(
-            "[%s] %s in %s:%d\n%s\n",
-            date('Y-m-d H:i:s'),
-            $exception->getMessage(),
-            $exception->getFile(),
-            $exception->getLine(),
-            $exception->getTraceAsString()
-        );
-        if (error_log($message, 3, $logDirectory . DIRECTORY_SEPARATOR . 'error.log') === false) {
-            error_log('Unable to write application error log.');
-        }
-    }
+    app_log(sprintf(
+        "%s in %s:%d\n%s",
+        $exception->getMessage(),
+        $exception->getFile(),
+        $exception->getLine(),
+        $exception->getTraceAsString()
+    ));
 
     if (!headers_sent()) {
         http_response_code(500);

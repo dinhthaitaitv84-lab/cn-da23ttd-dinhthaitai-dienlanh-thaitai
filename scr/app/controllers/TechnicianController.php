@@ -52,7 +52,7 @@ class TechnicianController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/technician/index');
+            $this->redirect(url('/technician/index'));
         }
     }
 
@@ -77,15 +77,15 @@ class TechnicianController extends Controller
             $data = $this->technicianInput(true);
             if ($data === false) {
                 $this->setFlash('error', 'Vui lòng kiểm tra thông tin và mật khẩu (ít nhất 8 ký tự).');
-                $this->redirect('/DoAn_DienLanh/scr/technician/create');
+                $this->redirect(url('/technician/create'));
             }
             $result = $this->model('TechnicianModel')->create($data);
             if ($result === 'duplicate') {
                 $this->setFlash('error', 'Email đã được sử dụng.');
-                $this->redirect('/DoAn_DienLanh/scr/technician/create');
+                $this->redirect(url('/technician/create'));
             }
             $this->setFlash('success', 'Đã thêm kỹ thuật viên.');
-            $this->redirect('/DoAn_DienLanh/scr/technician/index');
+            $this->redirect(url('/technician/index'));
         }
         $this->view('admin/technicians/form', [
             'title' => 'Thêm kỹ thuật viên',
@@ -100,14 +100,14 @@ class TechnicianController extends Controller
         $technician = $model->find((int) $id);
         if (!$technician) {
             $this->setFlash('error', 'Không tìm thấy kỹ thuật viên.');
-            $this->redirect('/DoAn_DienLanh/scr/technician/index');
+            $this->redirect(url('/technician/index'));
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->verifyPost();
             $data = $this->technicianInput(false);
             if ($data === false) {
                 $this->setFlash('error', 'Vui lòng kiểm tra thông tin kỹ thuật viên.');
-                $this->redirect('/DoAn_DienLanh/scr/technician/edit/' . (int) $id);
+                $this->redirect(url('/technician/edit/' . (int) $id));
             }
             $result = $model->update((int) $id, $data);
             if ($result === 'duplicate') {
@@ -117,7 +117,7 @@ class TechnicianController extends Controller
             } else {
                 $this->setFlash('success', 'Đã cập nhật thông tin kỹ thuật viên.');
             }
-            $this->redirect('/DoAn_DienLanh/scr/technician/index');
+            $this->redirect(url('/technician/index'));
         }
         $this->view('admin/technicians/form', [
             'title' => 'Sửa kỹ thuật viên',
@@ -141,7 +141,7 @@ class TechnicianController extends Controller
                     ? 'Trạng thái kỹ thuật viên không thay đổi.'
                     : 'Không tìm thấy kỹ thuật viên.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/technician/index');
+        $this->redirect(url('/technician/index'));
     }
 
     public function accountStatus($id = 0)
@@ -161,7 +161,7 @@ class TechnicianController extends Controller
             $this->setFlash($sameStatus ? 'success' : 'error',
                 $sameStatus ? 'Trạng thái tài khoản không thay đổi.' : 'Không tìm thấy kỹ thuật viên.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/technician/index');
+        $this->redirect(url('/technician/index'));
     }
 
     public function resetPassword($id = 0)
@@ -177,7 +177,7 @@ class TechnicianController extends Controller
             $this->setFlash($this->model('TechnicianModel')->find((int) $id) ? 'success' : 'error',
                 'Không tìm thấy kỹ thuật viên hoặc mật khẩu không thay đổi.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/technician/index');
+        $this->redirect(url('/technician/index'));
     }
 
     public function delete($id = 0)
@@ -194,7 +194,7 @@ class TechnicianController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy kỹ thuật viên.');
         }
-        $this->redirect($this->paginationReturnUrl('/DoAn_DienLanh/scr/technician/index'));
+        $this->redirect(url($this->paginationReturnUrl('/technician/index')));
     }
 
     private function technicianInput($includePassword)

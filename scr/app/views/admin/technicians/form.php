@@ -1,6 +1,6 @@
 <div class="page-head">
     <div><h1><?= htmlspecialchars($title, ENT_QUOTES, 'UTF-8') ?></h1><p>Cập nhật hồ sơ, chuyên môn và trạng thái làm việc.</p></div>
-    <a class="button button-secondary" href="/DoAn_DienLanh/scr/technician/index">Về danh sách</a>
+    <a class="button button-secondary" href="<?= htmlspecialchars(url('/technician/index'), ENT_QUOTES, 'UTF-8') ?>">Về danh sách</a>
 </div>
 <div class="admin-form-layout">
     <section class="card admin-form">
@@ -25,11 +25,11 @@
             <?php endif; ?>
             <div class="form-actions">
                 <button type="submit">Lưu</button>
-                <a class="button button-secondary" href="/DoAn_DienLanh/scr/technician/index">Hủy</a>
+                <a class="button button-secondary" href="<?= htmlspecialchars(url('/technician/index'), ENT_QUOTES, 'UTF-8') ?>">Hủy</a>
             </div>
         </form>
         <?php if ($technician !== null): ?>
-            <form class="reset-password-form" method="post" action="/DoAn_DienLanh/scr/technician/resetPassword/<?= (int) $technician['id'] ?>">
+            <form class="reset-password-form" method="post" action="<?= htmlspecialchars(url('/technician/resetPassword/' . (int) $technician['id']), ENT_QUOTES, 'UTF-8') ?>">
                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                 <div class="form-group"><label for="password">Đặt lại mật khẩu</label><input id="password" name="password" type="password" minlength="8" maxlength="255" required></div>
                 <button class="button-secondary" type="submit">Đặt lại mật khẩu</button>

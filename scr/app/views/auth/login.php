@@ -18,7 +18,7 @@
             <div class="flash flash-error"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div>
         <?php endif; ?>
 
-        <form method="post" action="/DoAn_DienLanh/scr/auth/login">
+        <form method="post" action="<?= htmlspecialchars(url('/auth/login'), ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <div class="form-group">
                 <label for="email">Email</label>
@@ -37,6 +37,6 @@
             <strong>Quên mật khẩu?</strong>
             <p>Liên hệ hotline <a href="tel:<?= htmlspecialchars(preg_replace('/\s+/', '', CONTACT_HOTLINE), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(CONTACT_HOTLINE, ENT_QUOTES, 'UTF-8') ?></a> để được cấp lại.</p>
         </div>
-        <p class="auth-switch">Chưa có tài khoản? <a href="/DoAn_DienLanh/scr/auth/register">Đăng ký</a></p>
+        <p class="auth-switch">Chưa có tài khoản? <a href="<?= htmlspecialchars(url('/auth/register'), ENT_QUOTES, 'UTF-8') ?>">Đăng ký</a></p>
     </section>
 </section>

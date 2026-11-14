@@ -2,7 +2,6 @@
 require_once __DIR__ . '/../partials/icons.php';
 $pageTitle = $title ?? 'Dịch vụ điện lạnh tại nhà';
 $currentUser = $_SESSION['user'] ?? null;
-$baseUrl = defined('BASE_URL') ? BASE_URL : '/DoAn_DienLanh/scr';
 $userRole = $currentUser['role'] ?? '';
 $dashboardUrl = $userRole === 'admin'
     ? $baseUrl . '/admin/dashboard'
@@ -26,7 +25,7 @@ $flashMessages = $this->getFlash();
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
-    <link rel="stylesheet" href="/DoAn_DienLanh/scr/public/css/style.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('public/css/style.css'), ENT_QUOTES, 'UTF-8') ?>">
 </head>
 <body class="<?= trim(($showMobileRequestCta ? 'has-mobile-request-cta ' : '') . ($isAuthPage ? 'auth-page ' : '') . ($isProfilePage ? 'profile-page ' : '') . ($isHomePage ? 'home-page' : '')) ?>">
     <header class="site-header">

@@ -10,7 +10,7 @@ class PartController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/part/index');
+            $this->redirect(url('/part/index'));
         }
     }
 
@@ -42,7 +42,7 @@ class PartController extends Controller
                 $this->setFlash($result === 'created' ? 'success' : 'error',
                     $result === 'created' ? 'Đã thêm linh kiện.' : 'Mã SKU đã được sử dụng.');
             }
-            $this->redirect('/DoAn_DienLanh/scr/part/index');
+            $this->redirect(url('/part/index'));
         }
         $this->view('admin/parts/form', ['title' => 'Thêm linh kiện', 'part' => null]);
     }
@@ -54,7 +54,7 @@ class PartController extends Controller
         $part = $model->find((int) $id);
         if (!$part) {
             $this->setFlash('error', 'Không tìm thấy linh kiện.');
-            $this->redirect('/DoAn_DienLanh/scr/part/index');
+            $this->redirect(url('/part/index'));
         }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->verifyPost();
@@ -66,7 +66,7 @@ class PartController extends Controller
                 $this->setFlash($result === 'updated' ? 'success' : 'error',
                     $result === 'updated' ? 'Đã cập nhật linh kiện.' : 'SKU đã được dùng hoặc không tìm thấy linh kiện.');
             }
-            $this->redirect('/DoAn_DienLanh/scr/part/index');
+            $this->redirect(url('/part/index'));
         }
         $this->view('admin/parts/form', ['title' => 'Sửa linh kiện', 'part' => $part]);
     }
@@ -83,7 +83,7 @@ class PartController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy linh kiện.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/part/index');
+        $this->redirect(url('/part/index'));
     }
 
     public function stock($id = 0)
@@ -103,7 +103,7 @@ class PartController extends Controller
             $message = $messages[$result];
             $this->setFlash($message[0], $message[1]);
         }
-        $this->redirect('/DoAn_DienLanh/scr/part/index');
+        $this->redirect(url('/part/index'));
     }
 
     public function delete($id = 0)
@@ -118,7 +118,7 @@ class PartController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy linh kiện.');
         }
-        $this->redirect($this->paginationReturnUrl('/DoAn_DienLanh/scr/part/index'));
+        $this->redirect(url($this->paginationReturnUrl('/part/index')));
     }
 
     private function partInput()

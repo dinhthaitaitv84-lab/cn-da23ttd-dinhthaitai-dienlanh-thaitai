@@ -16,6 +16,7 @@ function icon($name)
         'arrow' => '<path d="M7 17 17 7M7 7h10v10"/>',
         'check' => '<path d="m5 12 4 4L19 6"/>',
         'clock' => '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+        'message' => '<path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H6l-3 2v-6a8.5 8.5 0 1 1 18-4.5Z"/><path d="M8 11h8M8 15h5"/>',
         'chevron-down' => '<path d="m6 9 6 6 6-6"/>',
         'chevron-right' => '<path d="m9 18 6-6-6-6"/>',
         'search' => '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',

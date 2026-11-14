@@ -10,7 +10,7 @@ foreach ($job['parts'] as $availablePart) {
 <section class="technician-job-detail">
     <div class="page-head">
         <div><h1>Công việc <?= htmlspecialchars($job['code'], ENT_QUOTES, 'UTF-8') ?></h1><p><?= htmlspecialchars($job['title'], ENT_QUOTES, 'UTF-8') ?></p></div>
-        <a class="button button-secondary" href="/DoAn_DienLanh/scr/technician/jobs">Quay lại</a>
+        <a class="button button-secondary" href="<?= htmlspecialchars(url('/technician/jobs'), ENT_QUOTES, 'UTF-8') ?>">Quay lại</a>
     </div>
     <section class="card info-grid-card">
     <div class="request-info-grid info-grid">
@@ -35,8 +35,8 @@ foreach ($job['parts'] as $availablePart) {
             <h2>Ảnh yêu cầu</h2>
             <div class="request-gallery">
                 <?php foreach ($job['images'] as $image): ?>
-                    <button class="gallery-image js-image-modal" type="button" data-image="<?= htmlspecialchars('/DoAn_DienLanh/scr/' . ltrim($image, '/\\'), ENT_QUOTES, 'UTF-8') ?>" aria-label="Phóng to ảnh">
-                        <img src="<?= htmlspecialchars('/DoAn_DienLanh/scr/' . ltrim($image, '/\\'), ENT_QUOTES, 'UTF-8') ?>" alt="Ảnh yêu cầu <?= htmlspecialchars($job['code'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
+                    <button class="gallery-image js-image-modal" type="button" data-image="<?= htmlspecialchars(url('/' . ltrim($image, '/\\')), ENT_QUOTES, 'UTF-8') ?>" aria-label="Phóng to ảnh">
+                        <img src="<?= htmlspecialchars(url('/' . ltrim($image, '/\\')), ENT_QUOTES, 'UTF-8') ?>" alt="Ảnh yêu cầu <?= htmlspecialchars($job['code'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
                     </button>
                 <?php endforeach; ?>
             </div>
@@ -44,7 +44,7 @@ foreach ($job['parts'] as $availablePart) {
     <?php endif; ?>
 
     <?php if (!$readOnly && !empty($transitions[$job['status']])): ?>
-        <form class="card technician-action-card" method="post" action="/DoAn_DienLanh/scr/technician/updateStatus/<?= (int) $job['id'] ?>">
+        <form class="card technician-action-card" method="post" action="<?= htmlspecialchars(url('/technician/updateStatus/' . (int) $job['id']), ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <h2>Cập nhật trạng thái</h2>
             <div class="form-group"><label for="next-status">Chuyển sang</label>
@@ -60,7 +60,7 @@ foreach ($job['parts'] as $availablePart) {
     <?php endif; ?>
 
     <?php if (!$readOnly): ?>
-        <form class="card technician-action-card repair-report-form" method="post" action="/DoAn_DienLanh/scr/technician/saveReport/<?= (int) $job['id'] ?>" data-labor-cost="<?= htmlspecialchars((string) $report['labor_cost'], ENT_QUOTES, 'UTF-8') ?>">
+        <form class="card technician-action-card repair-report-form" method="post" action="<?= htmlspecialchars(url('/technician/saveReport/' . (int) $job['id']), ENT_QUOTES, 'UTF-8') ?>" data-labor-cost="<?= htmlspecialchars((string) $report['labor_cost'], ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <h2>Biên bản sửa chữa</h2>
             <div class="form-group"><label for="cause">Nguyên nhân hư hỏng</label><textarea id="cause" name="cause" rows="3"><?= htmlspecialchars($report['cause'] ?? '', ENT_QUOTES, 'UTF-8') ?></textarea></div>
@@ -107,7 +107,7 @@ foreach ($job['parts'] as $availablePart) {
     <?php endif; ?>
 
     <?php if (!$readOnly && in_array($job['status'], ['repairing', 'quoted'], true) && $job['report']): ?>
-        <form class="card technician-action-card" method="post" action="/DoAn_DienLanh/scr/technician/createQuote/<?= (int) $job['id'] ?>" data-confirm="Tạo và gửi báo giá cho yêu cầu này?">
+        <form class="card technician-action-card" method="post" action="<?= htmlspecialchars(url('/technician/createQuote/' . (int) $job['id']), ENT_QUOTES, 'UTF-8') ?>" data-confirm="Tạo và gửi báo giá cho yêu cầu này?">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <h2>Báo giá</h2>
             <?php if ($job['quote']): ?><p>Báo giá gần nhất: <strong><?= number_format((float) $job['quote']['total_amount'], 0, ',', '.') ?> ₫</strong></p><?php endif; ?>

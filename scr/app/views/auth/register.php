@@ -24,7 +24,7 @@
             <div class="flash flash-error"><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></div>
         <?php endif; ?>
 
-        <form method="post" action="/DoAn_DienLanh/scr/auth/register">
+        <form method="post" action="<?= htmlspecialchars(url('/auth/register'), ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <div class="auth-field-grid">
                 <div class="form-group">
@@ -52,6 +52,6 @@
             <button type="submit">Đăng ký</button>
         </form>
 
-        <p class="auth-switch">Đã có tài khoản? <a href="/DoAn_DienLanh/scr/auth/login">Đăng nhập</a></p>
+        <p class="auth-switch">Đã có tài khoản? <a href="<?= htmlspecialchars(url('/auth/login'), ENT_QUOTES, 'UTF-8') ?>">Đăng nhập</a></p>
     </section>
 </section>

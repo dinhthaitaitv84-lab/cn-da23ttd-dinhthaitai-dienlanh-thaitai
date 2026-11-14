@@ -2,5 +2,5 @@
     <p class="eyebrow">403</p>
     <h1>Không có quyền truy cập</h1>
     <p>Quý khách không có quyền xem trang này.</p>
-    <a class="button" href="/DoAn_DienLanh/scr/home">Về trang chủ</a>
+    <a class="button" href="<?= htmlspecialchars(url('/home'), ENT_QUOTES, 'UTF-8') ?>">Về trang chủ</a>
 </section>

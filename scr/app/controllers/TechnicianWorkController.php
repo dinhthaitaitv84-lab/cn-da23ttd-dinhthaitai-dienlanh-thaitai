@@ -12,7 +12,7 @@ class TechnicianWorkController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/technician/dashboard');
+            $this->redirect(url('/technician/dashboard'));
         }
     }
 
@@ -21,7 +21,7 @@ class TechnicianWorkController extends Controller
         $job = $model->findJob((int) $requestId, (int) $technicianId);
         if (!$job) {
             $this->setFlash('error', 'Không tìm thấy công việc được phân công.');
-            $this->redirect('/DoAn_DienLanh/scr/technician/jobs');
+            $this->redirect(url('/technician/jobs'));
         }
         return $job;
     }
@@ -106,7 +106,7 @@ class TechnicianWorkController extends Controller
         ];
         $message = $messages[$result] ?? ['error', 'Không thể cập nhật trạng thái.'];
         $this->setFlash($message[0], $message[1]);
-        $this->redirect('/DoAn_DienLanh/scr/technician/detail/' . (int) $id);
+        $this->redirect(url('/technician/detail/' . (int) $id));
     }
 
     public function saveReport($id = 0)
@@ -149,7 +149,7 @@ class TechnicianWorkController extends Controller
         if (!$validLabor || $warranty === false || $warranty < 0 || $warranty > 65535
             || strlen($cause) > 65535 || strlen($solution) > 65535 || $parts === false) {
             $this->setFlash('error', 'Vui lòng kiểm tra nội dung biên bản, tiền công và thời gian bảo hành.');
-            $this->redirect('/DoAn_DienLanh/scr/technician/detail/' . (int) $id);
+            $this->redirect(url('/technician/detail/' . (int) $id));
         }
         $result = $model->saveReport((int) $id, $technicianId, (int) $_SESSION['user']['id'], [
             'cause' => $cause,
@@ -169,7 +169,7 @@ class TechnicianWorkController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy công việc được phân công.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/technician/detail/' . (int) $id);
+        $this->redirect(url('/technician/detail/' . (int) $id));
     }
 
     public function createQuote($id = 0)
@@ -192,7 +192,7 @@ class TechnicianWorkController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy công việc được phân công.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/technician/detail/' . (int) $id);
+        $this->redirect(url('/technician/detail/' . (int) $id));
     }
 
     public function schedule()

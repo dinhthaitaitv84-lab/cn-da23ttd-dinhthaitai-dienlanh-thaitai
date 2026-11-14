@@ -24,7 +24,7 @@ class CustomerController extends Controller
         $this->authorize();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/customer/index');
+            $this->redirect(url('/customer/index'));
         }
 
         $statusInput = $_POST['status'] ?? '';
@@ -35,7 +35,7 @@ class CustomerController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy khách hàng.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/customer/index');
+        $this->redirect(url('/customer/index'));
     }
 
     public function resetPassword($id = 0)
@@ -43,7 +43,7 @@ class CustomerController extends Controller
         $this->authorize();
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/customer/index');
+            $this->redirect(url('/customer/index'));
         }
         $password = $_POST['password'] ?? '';
         if (!is_string($password) || strlen($password) < 8 || strlen($password) > 255) {
@@ -53,7 +53,7 @@ class CustomerController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy khách hàng.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/customer/detail/' . (int) $id);
+        $this->redirect(url('/customer/detail/' . (int) $id));
     }
 
     public function detail($id = 0)
@@ -64,7 +64,7 @@ class CustomerController extends Controller
         $customer = $model->find((int) $id, $pagination['perPage'], $pagination['offset']);
         if (!$customer) {
             $this->setFlash('error', 'Không tìm thấy khách hàng.');
-            $this->redirect('/DoAn_DienLanh/scr/customer/index');
+            $this->redirect(url('/customer/index'));
         }
         $this->view('admin/customers/detail', [
             'title' => 'Khách hàng ' . $customer['full_name'],
@@ -80,7 +80,7 @@ class CustomerController extends Controller
         $device = $model->deviceHistory((int) $id, null, $pagination['perPage'], $pagination['offset']);
         if (!$device) {
             $this->setFlash('error', 'Không tìm thấy thiết bị.');
-            $this->redirect('/DoAn_DienLanh/scr/customer/index');
+            $this->redirect(url('/customer/index'));
         }
         $this->view('device/history', [
             'title' => 'Lịch sử thiết bị ' . $device['name'],

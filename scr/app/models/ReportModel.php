@@ -88,7 +88,7 @@ class ReportModel
                  ) accepted_quotes ON accepted_quotes.request_id = requests.id
                  WHERE requests.status = 'completed'
                    AND requests.updated_at >= :start_at AND requests.updated_at < :end_at
-                 GROUP BY YEAR(requests.updated_at), MONTH(requests.updated_at)
+                 GROUP BY DATE_FORMAT(requests.updated_at, '%Y-%m-01')
                  ORDER BY period"
             );
         } else {

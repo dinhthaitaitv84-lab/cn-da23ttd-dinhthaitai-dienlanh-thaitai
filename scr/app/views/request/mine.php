@@ -6,9 +6,9 @@
     <section class="card request-list-card">
         <div class="request-list-heading">
             <h2>Danh sách yêu cầu</h2>
-            <a class="button" href="/DoAn_DienLanh/scr/request/create">Gửi yêu cầu</a>
+            <a class="button" href="<?= htmlspecialchars(url('/request/create'), ENT_QUOTES, 'UTF-8') ?>">Gửi yêu cầu</a>
         </div>
-        <form class="filter-form" method="get" action="/DoAn_DienLanh/scr/request/mine">
+        <form class="filter-form" method="get" action="<?= htmlspecialchars(url('/request/mine'), ENT_QUOTES, 'UTF-8') ?>">
             <div class="form-group">
                 <label for="status">Trạng thái</label>
                 <select id="status" name="status">
@@ -38,7 +38,7 @@
                             <td data-label="Dịch vụ"><?= htmlspecialchars($request['service_name'], ENT_QUOTES, 'UTF-8') ?></td>
                             <td data-label="Ngày gửi"><?= htmlspecialchars(date('d/m/Y H:i', strtotime($request['created_at'])), ENT_QUOTES, 'UTF-8') ?></td>
                             <td data-label="Trạng thái"><span class="badge badge-status badge-<?= htmlspecialchars($request['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($statuses[$request['status']] ?? $request['status'], ENT_QUOTES, 'UTF-8') ?></span></td>
-                            <td data-label="Chi tiết"><a class="request-detail-link" href="/DoAn_DienLanh/scr/request/detail/<?= (int) $request['id'] ?>">Chi tiết</a></td>
+                            <td data-label="Chi tiết"><a class="request-detail-link" href="<?= htmlspecialchars(url('/request/detail/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>">Chi tiết</a></td>
                         </tr>
                     <?php endforeach; ?>
                     <?php if (empty($requests)): ?><tr><td colspan="5" class="empty-state">Không tìm thấy yêu cầu nào.</td></tr><?php endif; ?>

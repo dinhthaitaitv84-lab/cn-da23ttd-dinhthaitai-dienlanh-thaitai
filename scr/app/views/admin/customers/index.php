@@ -1,6 +1,6 @@
 <section>
     <div class="page-head"><div><h1>Quản lý khách hàng</h1><p>Tra cứu hồ sơ, yêu cầu và tình trạng tài khoản khách hàng.</p></div></div>
-    <form class="filter-card" method="get" action="/DoAn_DienLanh/scr/customer/index">
+    <form class="filter-card" method="get" action="<?= htmlspecialchars(url('/customer/index'), ENT_QUOTES, 'UTF-8') ?>">
         <div class="form-group">
             <label for="customer-search">Tìm tên, SĐT hoặc email</label>
             <input id="customer-search" name="search" value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>">
@@ -15,15 +15,15 @@
             <tbody>
             <?php foreach ($customers as $customer): ?>
                 <tr>
-                    <td><a class="table-primary-link" href="/DoAn_DienLanh/scr/customer/detail/<?= (int) $customer['id'] ?>"><?= htmlspecialchars($customer['full_name'], ENT_QUOTES, 'UTF-8') ?></a><span class="table-subtext"><?= htmlspecialchars($customer['email'], ENT_QUOTES, 'UTF-8') ?></span></td>
+                    <td><a class="table-primary-link" href="<?= htmlspecialchars(url('/customer/detail/' . (int) $customer['id']), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($customer['full_name'], ENT_QUOTES, 'UTF-8') ?></a><span class="table-subtext"><?= htmlspecialchars($customer['email'], ENT_QUOTES, 'UTF-8') ?></span></td>
                     <td><?= htmlspecialchars($customer['phone'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                     <td><?= (int) $customer['request_count'] ?></td>
                     <td><strong><?= number_format((float) $customer['total_spent'], 0, ',', '.') ?> ₫</strong></td>
                     <td><?= htmlspecialchars(date('d/m/Y', strtotime($customer['created_at'])), ENT_QUOTES, 'UTF-8') ?></td>
                     <td><span class="badge <?= (int) $customer['status'] === 1 ? 'badge-success' : 'badge-muted' ?>"><?= (int) $customer['status'] === 1 ? 'Hoạt động' : 'Đã khóa' ?></span></td>
                     <td class="table-actions text-actions">
-                        <a class="text-action" href="/DoAn_DienLanh/scr/customer/detail/<?= (int) $customer['id'] ?>">Chi tiết</a>
-                        <form method="post" action="/DoAn_DienLanh/scr/customer/status/<?= (int) $customer['id'] ?>">
+                        <a class="text-action" href="<?= htmlspecialchars(url('/customer/detail/' . (int) $customer['id']), ENT_QUOTES, 'UTF-8') ?>">Chi tiết</a>
+                        <form method="post" action="<?= htmlspecialchars(url('/customer/status/' . (int) $customer['id']), ENT_QUOTES, 'UTF-8') ?>">
                             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                             <input type="hidden" name="status" value="<?= (int) $customer['status'] === 1 ? '0' : '1' ?>">
                             <button class="text-action <?= (int) $customer['status'] === 1 ? 'text-action-danger' : '' ?>" type="submit"><?= (int) $customer['status'] === 1 ? 'Khóa' : 'Mở' ?></button>

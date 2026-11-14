@@ -11,22 +11,22 @@
     $currentUserRole = $_SESSION['user']['role'] ?? '';
     $isStaff = in_array($currentUserRole, ['admin', 'technician'], true);
     $requestUrl = $currentUserRole === 'customer'
-        ? '/DoAn_DienLanh/scr/request/create'
-        : '/DoAn_DienLanh/scr/auth/login';
+        ? url('/request/create')
+        : url('/auth/login');
     ?>
     <div class="service-toolbar">
         <nav class="category-pills" aria-label="Nhóm dịch vụ">
             <a class="category-pill <?= $categoryId === 0 ? 'is-active' : '' ?>"
-                href="/DoAn_DienLanh/scr/service?category_id=0&amp;search=<?= rawurlencode($search) ?>">Tất cả</a>
+                href="<?= htmlspecialchars(url('/service?category_id=0&search=' . rawurlencode($search)), ENT_QUOTES, 'UTF-8') ?>">Tất cả</a>
             <?php foreach ($categories as $category): ?>
                 <?php $categoryCount = (int) ($categoryCounts[(int) $category['id']] ?? 0); ?>
                 <a class="category-pill <?= $categoryId === (int) $category['id'] ? 'is-active' : '' ?>"
-                    href="/DoAn_DienLanh/scr/service?category_id=<?= (int) $category['id'] ?>&amp;search=<?= rawurlencode($search) ?>">
+                    href="<?= htmlspecialchars(url('/service?category_id=' . (int) $category['id'] . '&search=' . rawurlencode($search)), ENT_QUOTES, 'UTF-8') ?>">
                     <?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?> (<?= $categoryCount ?>)
                 </a>
             <?php endforeach; ?>
         </nav>
-        <form class="service-search" method="get" action="/DoAn_DienLanh/scr/service">
+        <form class="service-search" method="get" action="<?= htmlspecialchars(url('/service'), ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="category_id" value="<?= (int) $categoryId ?>">
             <label class="sr-only" for="search">Tìm theo tên dịch vụ</label>
             <input id="search" name="search" placeholder="Tìm dịch vụ..." value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>">
@@ -61,7 +61,7 @@
                                 <span>Thời gian dự kiến</span>
                                 <strong><?= (int) $service['est_minutes'] ?> phút</strong>
                             </div>
-                            <a class="button button-outline" href="/DoAn_DienLanh/scr/request/create?service_id=<?= (int) $service['id'] ?>">Tạo yêu cầu</a>
+                            <a class="button button-outline" href="<?= htmlspecialchars(url('/request/create?service_id=' . (int) $service['id']), ENT_QUOTES, 'UTF-8') ?>">Tạo yêu cầu</a>
                         </div>
                     </article>
                 <?php endforeach; ?>

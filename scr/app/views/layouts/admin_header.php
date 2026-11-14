@@ -23,11 +23,10 @@ if ($userName === '') {
 }
 $role = $currentUser['role'] ?? '';
 $roleLabel = $role === 'admin' ? 'Quản trị viên' : 'Kỹ thuật viên';
-$baseUrl = defined('BASE_URL') ? BASE_URL : '/DoAn_DienLanh/scr';
 $dashboardUrl = $role === 'admin'
-    ? '/DoAn_DienLanh/scr/admin/dashboard'
-    : '/DoAn_DienLanh/scr/technician/dashboard';
-$homeUrl = $baseUrl . '/home';
+    ? url('/admin/dashboard')
+    : url('/technician/dashboard');
+$homeUrl = url('/home');
 $flashMessages = $this->getFlash();
 $currentRoute = trim((string) ($_GET['url'] ?? ''), '/');
 $routeSegments = explode('/', $currentRoute);
@@ -90,35 +89,36 @@ $pendingRequestCount = isset($stats['pending'])
 $sidebarGroups = $role === 'admin'
     ? [
         ['KHÔNG GIAN QUẢN TRỊ', [
-            ['Tổng quan', '/DoAn_DienLanh/scr/admin/dashboard', 'grid'],
+            ['Tổng quan', '/admin/dashboard', 'grid'],
         ]],
         ['VẬN HÀNH', [
-            ['Yêu cầu', '/DoAn_DienLanh/scr/admin/requests', 'request', $pendingRequestCount],
-            ['Lịch kỹ thuật viên', '/DoAn_DienLanh/scr/admin/schedule', 'calendar'],
-            ['Đánh giá', '/DoAn_DienLanh/scr/admin/reviews', 'star'],
+            ['Yêu cầu', '/admin/requests', 'request', $pendingRequestCount],
+            ['Lịch kỹ thuật viên', '/admin/schedule', 'calendar'],
+            ['Đánh giá', '/admin/reviews', 'star'],
+            ['Hỗ trợ khách hàng', '/support/inbox', 'message'],
         ]],
         ['DANH MỤC', [
-            ['Nhóm dịch vụ', '/DoAn_DienLanh/scr/admin/categories', 'folder'],
-            ['Dịch vụ', '/DoAn_DienLanh/scr/admin/services', 'tool'],
-            ['Linh kiện', '/DoAn_DienLanh/scr/part/index', 'cube'],
+            ['Nhóm dịch vụ', '/admin/categories', 'folder'],
+            ['Dịch vụ', '/admin/services', 'tool'],
+            ['Linh kiện', '/part/index', 'cube'],
         ]],
         ['NHÂN SỰ & KHÁCH HÀNG', [
-            ['Kỹ thuật viên', '/DoAn_DienLanh/scr/technician/index', 'users'],
-            ['Khách hàng', '/DoAn_DienLanh/scr/customer/index', 'user'],
+            ['Kỹ thuật viên', '/technician/index', 'users'],
+            ['Khách hàng', '/customer/index', 'user'],
         ]],
         ['BÁO CÁO', [
-            ['Tổng quan', '/DoAn_DienLanh/scr/report/index', 'chart'],
-            ['Dịch vụ', '/DoAn_DienLanh/scr/report/services', 'tool'],
-            ['Kỹ thuật viên', '/DoAn_DienLanh/scr/report/technicians', 'users'],
-            ['Trạng thái', '/DoAn_DienLanh/scr/report/status', 'chart'],
-            ['Linh kiện', '/DoAn_DienLanh/scr/report/parts', 'cube'],
+            ['Tổng quan', '/report/index', 'chart'],
+            ['Dịch vụ', '/report/services', 'tool'],
+            ['Kỹ thuật viên', '/report/technicians', 'users'],
+            ['Trạng thái', '/report/status', 'chart'],
+            ['Linh kiện', '/report/parts', 'cube'],
         ]],
     ]
     : [
         ['CÔNG VIỆC', [
-            ['Tổng quan', '/DoAn_DienLanh/scr/technician/dashboard', 'grid'],
-            ['Việc của tôi', '/DoAn_DienLanh/scr/technician/jobs', 'request'],
-            ['Lịch làm việc', '/DoAn_DienLanh/scr/technician/schedule', 'calendar'],
+            ['Tổng quan', '/technician/dashboard', 'grid'],
+            ['Việc của tôi', '/technician/jobs', 'request'],
+            ['Lịch làm việc', '/technician/schedule', 'calendar'],
         ]],
     ];
 ?>
@@ -128,7 +128,7 @@ $sidebarGroups = $role === 'admin'
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></title>
-    <link rel="stylesheet" href="/DoAn_DienLanh/scr/public/css/style.css">
+    <link rel="stylesheet" href="<?= htmlspecialchars(asset_url('public/css/style.css'), ENT_QUOTES, 'UTF-8') ?>">
 </head>
 <body class="admin-layout <?= $role === 'technician' ? 'technician-layout' : '' ?>">
     <button class="admin-sidebar-overlay" type="button" aria-label="Đóng menu"></button>
@@ -145,11 +145,13 @@ $sidebarGroups = $role === 'admin'
                         <?php list($label, $url, $iconName) = $item; ?>
                         <?php
                         $navPath = (string) parse_url($url, PHP_URL_PATH);
-                        $navRoute = preg_replace('#^.*/scr/#', '', $navPath);
+                        $basePath = parse_url(BASE_URL, PHP_URL_PATH);
+                        $basePath = is_string($basePath) ? rtrim($basePath, '/') : '';
+                        $navRoute = trim(str_replace($basePath, '', $navPath), '/');
                         $isNavActive = $activeSidebarRoute === $navRoute
                             || strpos($activeSidebarRoute, $navRoute . '/') === 0;
                         ?>
-                        <a class="admin-nav-link <?= $isNavActive ? 'is-active' : '' ?>" href="<?= htmlspecialchars($url, ENT_QUOTES, 'UTF-8') ?>"<?= $isNavActive ? ' aria-current="page"' : '' ?>>
+                        <a class="admin-nav-link <?= $isNavActive ? 'is-active' : '' ?>" href="<?= htmlspecialchars(url($url), ENT_QUOTES, 'UTF-8') ?>"<?= $isNavActive ? ' aria-current="page"' : '' ?>>
                             <?= icon($iconName) ?>
                             <?= htmlspecialchars($label, ENT_QUOTES, 'UTF-8') ?>
                             <?php if ($label === 'Yêu cầu'): ?><span class="admin-nav-count"><?= (int) ($item[3] ?? 0) ?></span><?php endif; ?>
@@ -189,8 +191,8 @@ $sidebarGroups = $role === 'admin'
                         <div class="admin-user-dropdown-email"><?= htmlspecialchars($userEmail, ENT_QUOTES, 'UTF-8') ?></div>
                     </div>
                     <div class="admin-user-dropdown-links">
-                        <a href="/DoAn_DienLanh/scr/profile/index">Hồ sơ</a>
-                        <a href="/DoAn_DienLanh/scr/auth/logout">Đăng xuất</a>
+                        <a href="<?= htmlspecialchars(url('/profile/index'), ENT_QUOTES, 'UTF-8') ?>">Hồ sơ</a>
+                        <a href="<?= htmlspecialchars(url('/auth/logout'), ENT_QUOTES, 'UTF-8') ?>">Đăng xuất</a>
                     </div>
                 </div>
             </div>

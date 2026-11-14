@@ -1,10 +1,10 @@
 <section>
     <div class="page-head">
         <div><h1>Quản lý linh kiện</h1><p>Quản lý danh sách linh kiện, giá bán và số lượng tồn kho.</p></div>
-        <a class="button" href="/DoAn_DienLanh/scr/part/create">Thêm linh kiện</a>
+        <a class="button" href="<?= htmlspecialchars(url('/part/create'), ENT_QUOTES, 'UTF-8') ?>">Thêm linh kiện</a>
     </div>
 
-    <form class="filter-card" method="get" action="/DoAn_DienLanh/scr/part/index">
+    <form class="filter-card" method="get" action="<?= htmlspecialchars(url('/part/index'), ENT_QUOTES, 'UTF-8') ?>">
         <div class="form-group">
             <label for="part-search">Tìm tên hoặc SKU</label>
             <input id="part-search" name="search" value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>">
@@ -32,19 +32,19 @@
                     <td><span class="badge <?= (int) $part['status'] === 1 ? 'badge-success' : 'badge-muted' ?>"><?= (int) $part['status'] === 1 ? 'Hiển thị' : 'Đang ẩn' ?></span></td>
                     <td>
                         <div class="table-actions text-actions">
-                            <a class="text-action" href="/DoAn_DienLanh/scr/part/edit/<?= (int) $part['id'] ?>">Sửa</a>
-                            <form method="post" action="/DoAn_DienLanh/scr/part/stock/<?= (int) $part['id'] ?>">
+                            <a class="text-action" href="<?= htmlspecialchars(url('/part/edit/' . (int) $part['id']), ENT_QUOTES, 'UTF-8') ?>">Sửa</a>
+                            <form method="post" action="<?= htmlspecialchars(url('/part/stock/' . (int) $part['id']), ENT_QUOTES, 'UTF-8') ?>">
                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                                 <label class="sr-only" for="stock-<?= (int) $part['id'] ?>">Số lượng nhập kho</label>
                                 <input class="inline-number" id="stock-<?= (int) $part['id'] ?>" type="number" name="quantity" min="1" step="1" required>
                                 <button class="text-action text-action-neutral" type="submit">Nhập kho</button>
                             </form>
-                            <form method="post" action="/DoAn_DienLanh/scr/part/status/<?= (int) $part['id'] ?>">
+                            <form method="post" action="<?= htmlspecialchars(url('/part/status/' . (int) $part['id']), ENT_QUOTES, 'UTF-8') ?>">
                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                                 <input type="hidden" name="status" value="<?= (int) $part['status'] === 1 ? '0' : '1' ?>">
                                 <button class="text-action text-action-neutral" type="submit"><?= (int) $part['status'] === 1 ? 'Ẩn' : 'Hiện' ?></button>
                             </form>
-                            <form method="post" action="/DoAn_DienLanh/scr/part/delete/<?= (int) $part['id'] ?>" data-confirm="Xác nhận xóa linh kiện này?">
+                            <form method="post" action="<?= htmlspecialchars(url('/part/delete/' . (int) $part['id']), ENT_QUOTES, 'UTF-8') ?>" data-confirm="Xác nhận xóa linh kiện này?">
                                 <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                                 <input type="hidden" name="page" value="<?= (int) $page ?>">
                                 <input type="hidden" name="search" value="<?= htmlspecialchars($search, ENT_QUOTES, 'UTF-8') ?>">

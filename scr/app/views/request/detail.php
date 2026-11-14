@@ -5,7 +5,7 @@
             <p><?= htmlspecialchars($request['title'], ENT_QUOTES, 'UTF-8') ?></p>
             <span class="badge badge-status badge-<?= htmlspecialchars($request['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($statusLabels[$request['status']] ?? $request['status'], ENT_QUOTES, 'UTF-8') ?></span>
         </div>
-        <a class="button button-outline" href="/DoAn_DienLanh/scr/request/mine">Về danh sách</a>
+        <a class="button button-outline" href="<?= htmlspecialchars(url('/request/mine'), ENT_QUOTES, 'UTF-8') ?>">Về danh sách</a>
     </header>
 
     <div class="request-detail-layout">
@@ -36,8 +36,8 @@
             <h2>Ảnh thiết bị</h2>
             <div class="request-gallery">
                 <?php foreach ($request['images'] as $image): ?>
-                    <button class="gallery-image js-image-modal" type="button" data-image="<?= htmlspecialchars('/DoAn_DienLanh/scr/' . ltrim($image, '/\\'), ENT_QUOTES, 'UTF-8') ?>" aria-label="Phóng to ảnh">
-                        <img src="<?= htmlspecialchars('/DoAn_DienLanh/scr/' . ltrim($image, '/\\'), ENT_QUOTES, 'UTF-8') ?>" alt="Ảnh yêu cầu <?= htmlspecialchars($request['code'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
+                    <button class="gallery-image js-image-modal" type="button" data-image="<?= htmlspecialchars(url('/' . ltrim($image, '/\\')), ENT_QUOTES, 'UTF-8') ?>" aria-label="Phóng to ảnh">
+                        <img src="<?= htmlspecialchars(url('/' . ltrim($image, '/\\')), ENT_QUOTES, 'UTF-8') ?>" alt="Ảnh yêu cầu <?= htmlspecialchars($request['code'], ENT_QUOTES, 'UTF-8') ?>" loading="lazy">
                     </button>
                 <?php endforeach; ?>
             </div>
@@ -82,11 +82,11 @@
             <p class="quote-created-at">Ngày báo giá: <?= htmlspecialchars(date('d/m/Y H:i', strtotime($request['quote']['created_at'])), ENT_QUOTES, 'UTF-8') ?></p>
             <?php if ($request['status'] === 'quoted' && $request['quote']['status'] === 'sent'): ?>
                 <div class="quote-actions">
-                    <form method="post" action="/DoAn_DienLanh/scr/request/acceptQuote/<?= (int) $request['id'] ?>" data-confirm="Xác nhận chấp nhận báo giá này?">
+                    <form method="post" action="<?= htmlspecialchars(url('/request/acceptQuote/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>" data-confirm="Xác nhận chấp nhận báo giá này?">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <button type="submit">Chấp nhận báo giá</button>
                     </form>
-                    <form method="post" action="/DoAn_DienLanh/scr/request/rejectQuote/<?= (int) $request['id'] ?>">
+                    <form method="post" action="<?= htmlspecialchars(url('/request/rejectQuote/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <div class="form-group">
                             <label for="quote-reject-reason">Lý do từ chối</label>
@@ -114,7 +114,7 @@
             <p>Quý khách đã xác nhận hoàn thành dịch vụ lúc <?= htmlspecialchars(date('d/m/Y H:i', strtotime($completionConfirmedAt)), ENT_QUOTES, 'UTF-8') ?>.</p>
         </section>
     <?php elseif ($request['status'] === 'completed'): ?>
-        <form class="card completion-confirmation-card" method="post" action="/DoAn_DienLanh/scr/request/confirmCompletion/<?= (int) $request['id'] ?>" data-confirm="Xác nhận dịch vụ đã hoàn thành?">
+        <form class="card completion-confirmation-card" method="post" action="<?= htmlspecialchars(url('/request/confirmCompletion/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>" data-confirm="Xác nhận dịch vụ đã hoàn thành?">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <h2>Xác nhận hoàn thành dịch vụ</h2>
             <p>Vui lòng xác nhận sau khi đã kiểm tra kết quả sửa chữa.</p>
@@ -123,7 +123,7 @@
     <?php endif; ?>
 
     <?php if ($request['status'] === 'completed' && !empty($completionConfirmedAt) && empty($request['review'])): ?>
-        <form class="card review-form" method="post" action="/DoAn_DienLanh/scr/request/review/<?= (int) $request['id'] ?>">
+        <form class="card review-form" method="post" action="<?= htmlspecialchars(url('/request/review/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>">
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
             <h2>Đánh giá dịch vụ</h2>
             <fieldset class="rating-fieldset">
@@ -173,7 +173,7 @@
             <div><span>Mức ưu tiên</span><strong><?= htmlspecialchars($priorityLabels[$request['priority']] ?? $request['priority'], ENT_QUOTES, 'UTF-8') ?></strong></div>
             <div><span>Trạng thái</span><strong><?= htmlspecialchars($statusLabels[$request['status']] ?? $request['status'], ENT_QUOTES, 'UTF-8') ?></strong></div>
             <?php if ($request['status'] === 'pending'): ?>
-                <form method="post" action="/DoAn_DienLanh/scr/request/cancel/<?= (int) $request['id'] ?>" data-confirm="Quý khách xác nhận hủy yêu cầu này?">
+                <form method="post" action="<?= htmlspecialchars(url('/request/cancel/' . (int) $request['id']), ENT_QUOTES, 'UTF-8') ?>" data-confirm="Quý khách xác nhận hủy yêu cầu này?">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                     <button class="button-danger" type="submit">Hủy yêu cầu</button>
                 </form>

@@ -1,6 +1,6 @@
 <div class="page-head">
     <div><h1>Nhóm dịch vụ</h1><p>Quản lý các nhóm thiết bị và dịch vụ đang cung cấp.</p></div>
-    <a class="button" href="/DoAn_DienLanh/scr/admin/categoryCreate">Thêm nhóm dịch vụ</a>
+    <a class="button" href="<?= htmlspecialchars(url('/admin/categoryCreate'), ENT_QUOTES, 'UTF-8') ?>">Thêm nhóm dịch vụ</a>
 </div>
 <div class="table-card">
     <div class="table-card-head"><h2>Danh sách nhóm dịch vụ</h2><span><?= (int) ($total ?? count($categories)) ?> nhóm dịch vụ</span></div>
@@ -13,12 +13,12 @@
                 <td><?= htmlspecialchars($category['description'] ?? '', ENT_QUOTES, 'UTF-8') ?></td>
                 <td><span class="badge <?= (int) $category['status'] === 1 ? 'badge-success' : 'badge-muted' ?>"><?= (int) $category['status'] === 1 ? 'Hiển thị' : 'Đang ẩn' ?></span></td>
                 <td class="table-actions text-actions">
-                    <a class="text-action" href="/DoAn_DienLanh/scr/admin/categoryEdit/<?= (int) $category['id'] ?>">Sửa</a>
-                    <form method="post" action="/DoAn_DienLanh/scr/admin/categoryToggle/<?= (int) $category['id'] ?>">
+                    <a class="text-action" href="<?= htmlspecialchars(url('/admin/categoryEdit/' . (int) $category['id']), ENT_QUOTES, 'UTF-8') ?>">Sửa</a>
+                    <form method="post" action="<?= htmlspecialchars(url('/admin/categoryToggle/' . (int) $category['id']), ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <button class="text-action text-action-neutral" type="submit">Ẩn/Hiện</button>
                     </form>
-                    <form method="post" action="/DoAn_DienLanh/scr/admin/categoryDelete/<?= (int) $category['id'] ?>" data-confirm="Xóa nhóm dịch vụ này?">
+                    <form method="post" action="<?= htmlspecialchars(url('/admin/categoryDelete/' . (int) $category['id']), ENT_QUOTES, 'UTF-8') ?>" data-confirm="Xóa nhóm dịch vụ này?">
                         <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                         <input type="hidden" name="page" value="<?= (int) $page ?>">
                         <button class="text-action text-action-danger" type="submit">Xóa</button>

@@ -22,7 +22,7 @@ class DeviceController extends Controller
         $device = $model->deviceHistory((int) $id, (int) $_SESSION['user']['id'], $pagination['perPage'], $pagination['offset']);
         if (!$device) {
             $this->setFlash('error', 'Không tìm thấy thiết bị hoặc Quý khách không có quyền xem thiết bị này.');
-            $this->redirect('/DoAn_DienLanh/scr/device/index');
+            $this->redirect(url('/device/index'));
         }
         $this->view('device/history', [
             'title' => 'Lịch sử thiết bị ' . $device['name'],
@@ -35,21 +35,21 @@ class DeviceController extends Controller
         $this->requireRole('customer');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/device/index');
+            $this->redirect(url('/device/index'));
         }
 
         $data = $this->deviceInput();
         if (!$this->validDeviceInput($data)) {
             $this->setFlash('error', 'Vui lòng kiểm tra nhóm, tên, hãng, model và ghi chú thiết bị.');
-            $this->redirect('/DoAn_DienLanh/scr/device/index');
+            $this->redirect(url('/device/index'));
         }
 
         if (!$this->model('DeviceModel')->create((int) $_SESSION['user']['id'], $data)) {
             $this->setFlash('error', 'Nhóm thiết bị không hợp lệ hoặc đã ngừng hoạt động.');
-            $this->redirect('/DoAn_DienLanh/scr/device/index');
+            $this->redirect(url('/device/index'));
         }
         $this->setFlash('success', 'Đã thêm thiết bị.');
-        $this->redirect('/DoAn_DienLanh/scr/device/index');
+        $this->redirect(url('/device/index'));
     }
 
     public function update($id = 0)
@@ -57,21 +57,21 @@ class DeviceController extends Controller
         $this->requireRole('customer');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/device/index');
+            $this->redirect(url('/device/index'));
         }
 
         $data = $this->deviceInput();
         if (!$this->validDeviceInput($data)) {
             $this->setFlash('error', 'Vui lòng kiểm tra nhóm, tên, hãng, model và ghi chú thiết bị.');
-            $this->redirect('/DoAn_DienLanh/scr/device/index');
+            $this->redirect(url('/device/index'));
         }
 
         if (!$this->model('DeviceModel')->update((int) $id, (int) $_SESSION['user']['id'], $data)) {
             $this->setFlash('error', 'Không thể cập nhật thiết bị. Vui lòng kiểm tra quyền sở hữu và nhóm thiết bị.');
-            $this->redirect('/DoAn_DienLanh/scr/device/index');
+            $this->redirect(url('/device/index'));
         }
         $this->setFlash('success', 'Đã cập nhật thiết bị.');
-        $this->redirect('/DoAn_DienLanh/scr/device/index');
+        $this->redirect(url('/device/index'));
     }
 
     public function delete($id = 0)
@@ -79,7 +79,7 @@ class DeviceController extends Controller
         $this->requireRole('customer');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/device/index');
+            $this->redirect(url('/device/index'));
         }
 
         $result = $this->model('DeviceModel')->delete((int) $id, (int) $_SESSION['user']['id']);
@@ -90,7 +90,7 @@ class DeviceController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy thiết bị hoặc Quý khách không có quyền xóa thiết bị này.');
         }
-        $this->redirect($this->paginationReturnUrl('/DoAn_DienLanh/scr/device/index'));
+        $this->redirect(url($this->paginationReturnUrl('/device/index')));
     }
 
     private function deviceInput()

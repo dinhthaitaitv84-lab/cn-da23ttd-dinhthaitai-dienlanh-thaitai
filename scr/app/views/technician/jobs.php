@@ -1,8 +1,8 @@
 <div class="page-head">
     <div><h1>Việc của tôi</h1><p>Danh sách yêu cầu được phân công cho bạn.</p></div>
-    <a class="button button-secondary" href="/DoAn_DienLanh/scr/technician/schedule">Lịch làm việc</a>
+    <a class="button button-secondary" href="<?= htmlspecialchars(url('/technician/schedule'), ENT_QUOTES, 'UTF-8') ?>">Lịch làm việc</a>
 </div>
-<form class="filter-card" method="get" action="/DoAn_DienLanh/scr/technician/jobs">
+<form class="filter-card" method="get" action="<?= htmlspecialchars(url('/technician/jobs'), ENT_QUOTES, 'UTF-8') ?>">
     <div class="form-group">
         <label for="status">Trạng thái</label>
         <select id="status" name="status">
@@ -30,7 +30,7 @@
                 <td><span class="badge badge-status badge-<?= htmlspecialchars($job['status'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($statuses[$job['status']] ?? $job['status'], ENT_QUOTES, 'UTF-8') ?></span></td>
                 <td><span class="badge badge-priority badge-priority-<?= htmlspecialchars($job['priority'], ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars(['low' => 'Thấp', 'normal' => 'Bình thường', 'high' => 'Cao', 'urgent' => 'Khẩn cấp'][$job['priority']] ?? $job['priority'], ENT_QUOTES, 'UTF-8') ?></span></td>
                 <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($job['preferred_time'])), ENT_QUOTES, 'UTF-8') ?></td>
-                <td><a class="button button-secondary" href="/DoAn_DienLanh/scr/technician/detail/<?= (int) $job['id'] ?>">Chi tiết</a></td>
+                <td><a class="button button-secondary" href="<?= htmlspecialchars(url('/technician/detail/' . (int) $job['id']), ENT_QUOTES, 'UTF-8') ?>">Chi tiết</a></td>
             </tr>
         <?php endforeach; ?>
         <?php if (empty($jobs)): ?><tr><td colspan="7" class="empty-state">Không tìm thấy công việc.</td></tr><?php endif; ?>

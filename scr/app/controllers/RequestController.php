@@ -54,9 +54,14 @@ class RequestController extends Controller
     public function store()
     {
         $this->requireRole('customer');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && ini_size_bytes('post_max_size') > 0
+            && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > ini_size_bytes('post_max_size')) {
+            $this->setFlash('error', 'Tổng dung lượng ảnh vượt quá giới hạn của máy chủ. Vui lòng chọn ít ảnh hơn.');
+            $this->redirect(url('/request/create'));
+        }
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/request/create');
+            $this->redirect(url('/request/create'));
         }
 
         $categoryId = max(0, (int) ($_POST['category_id'] ?? 0));
@@ -78,7 +83,7 @@ class RequestController extends Controller
                 'preferred_time' => $_POST['preferred_time'] ?? '',
             ];
             $this->setFlash('error', 'Địa chỉ nằm ngoài khu vực phục vụ. Hiện chỉ nhận yêu cầu tại ' . SERVICE_AREA_TEXT . '.');
-            $this->redirect('/DoAn_DienLanh/scr/request/create');
+            $this->redirect(url('/request/create'));
         }
         $preferredInput = trim($_POST['preferred_time'] ?? '');
         $preferredTime = DateTime::createFromFormat('Y-m-d\TH:i', $preferredInput);
@@ -94,17 +99,17 @@ class RequestController extends Controller
         $deviceModel = trim($_POST['device_model'] ?? '');
         if ($deviceId === '' && $deviceName === '') {
             $this->setFlash('error', 'Vui lòng chọn thiết bị hoặc nhập tên thiết bị mới.');
-            $this->redirect('/DoAn_DienLanh/scr/request/create');
+            $this->redirect(url('/request/create'));
         }
         if ($deviceId !== '' && !ctype_digit($deviceId)) {
             $this->setFlash('error', 'Thiết bị đã chọn không hợp lệ.');
-            $this->redirect('/DoAn_DienLanh/scr/request/create');
+            $this->redirect(url('/request/create'));
         }
         if (!$service || (int) $service['category_id'] !== $categoryId
             || $title === '' || mb_strlen($title) > 200 || $address === '' || mb_strlen($address) > 500 || $dateInvalid
             || mb_strlen($deviceName) > 150 || mb_strlen($deviceBrand) > 100 || mb_strlen($deviceModel) > 100) {
             $this->setFlash('error', 'Vui lòng kiểm tra dịch vụ, tiêu đề, địa chỉ và thời gian mong muốn.');
-            $this->redirect('/DoAn_DienLanh/scr/request/create');
+            $this->redirect(url('/request/create'));
         }
 
         $uploadedPaths = [];
@@ -144,11 +149,11 @@ class RequestController extends Controller
             $this->setFlash('error', $exception instanceof InvalidArgumentException
                 ? $exception->getMessage()
                 : 'Không thể gửi yêu cầu. Vui lòng thử lại.');
-            $this->redirect('/DoAn_DienLanh/scr/request/create');
+            $this->redirect(url('/request/create'));
         }
 
         $this->setFlash('success', 'Đã gửi yêu cầu.');
-        $this->redirect('/DoAn_DienLanh/scr/request/mine');
+        $this->redirect(url('/request/mine'));
     }
 
     public function mine()
@@ -190,7 +195,7 @@ class RequestController extends Controller
         $request = $requestModel->findMine((int) $id, (int) $_SESSION['user']['id']);
         if (!$request) {
             $this->setFlash('error', 'Không tìm thấy yêu cầu hoặc Quý khách không có quyền xem yêu cầu này.');
-            $this->redirect('/DoAn_DienLanh/scr/request/mine');
+            $this->redirect(url('/request/mine'));
         }
 
         $completedAt = null;
@@ -237,7 +242,7 @@ class RequestController extends Controller
         $this->requireRole('customer');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/request/mine');
+            $this->redirect(url('/request/mine'));
         }
         $result = $this->model('RequestModel')->quoteDecision(
             (int) $id,
@@ -252,7 +257,7 @@ class RequestController extends Controller
                 ? 'Không tìm thấy yêu cầu hoặc Quý khách không có quyền thao tác.'
                 : 'Báo giá không còn hiệu lực để chấp nhận.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/request/detail/' . (int) $id);
+        $this->redirect(url('/request/detail/' . (int) $id));
     }
 
     public function rejectQuote($id = 0)
@@ -260,13 +265,13 @@ class RequestController extends Controller
         $this->requireRole('customer');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/request/mine');
+            $this->redirect(url('/request/mine'));
         }
         $reasonInput = $_POST['reason'] ?? '';
         $reason = is_string($reasonInput) ? trim($reasonInput) : '';
         if ($reason === '' || mb_strlen($reason) > 1000) {
             $this->setFlash('error', 'Vui lòng nhập lý do từ chối báo giá (tối đa 1000 ký tự).');
-            $this->redirect('/DoAn_DienLanh/scr/request/detail/' . (int) $id);
+            $this->redirect(url('/request/detail/' . (int) $id));
         }
         $result = $this->model('RequestModel')->quoteDecision(
             (int) $id,
@@ -281,7 +286,7 @@ class RequestController extends Controller
                 ? 'Không tìm thấy yêu cầu hoặc Quý khách không có quyền thao tác.'
                 : 'Báo giá không còn hiệu lực để từ chối.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/request/detail/' . (int) $id);
+        $this->redirect(url('/request/detail/' . (int) $id));
     }
 
     public function review($id = 0)
@@ -289,7 +294,7 @@ class RequestController extends Controller
         $this->requireRole('customer');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/request/mine');
+            $this->redirect(url('/request/mine'));
         }
         $ratingInput = $_POST['rating'] ?? '';
         $commentInput = $_POST['comment'] ?? '';
@@ -297,7 +302,7 @@ class RequestController extends Controller
         $comment = is_string($commentInput) ? trim($commentInput) : '';
         if ($rating < 1 || $rating > 5 || mb_strlen($comment) > 5000) {
             $this->setFlash('error', 'Vui lòng chọn số sao từ 1 đến 5 và kiểm tra nội dung đánh giá.');
-            $this->redirect('/DoAn_DienLanh/scr/request/detail/' . (int) $id);
+            $this->redirect(url('/request/detail/' . (int) $id));
         }
         $result = $this->model('RequestModel')->createReview(
             (int) $id,
@@ -316,7 +321,7 @@ class RequestController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy yêu cầu hoặc Quý khách không có quyền đánh giá.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/request/detail/' . (int) $id);
+        $this->redirect(url('/request/detail/' . (int) $id));
     }
 
     public function confirmCompletion($id = 0)
@@ -324,7 +329,7 @@ class RequestController extends Controller
         $this->requireRole('customer');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/request/mine');
+            $this->redirect(url('/request/mine'));
         }
 
         $result = $this->model('RequestModel')->confirmCompletion(
@@ -340,7 +345,7 @@ class RequestController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy yêu cầu hoặc Quý khách không có quyền xác nhận.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/request/detail/' . (int) $id);
+        $this->redirect(url('/request/detail/' . (int) $id));
     }
 
     public function cancel($id = 0)
@@ -348,7 +353,7 @@ class RequestController extends Controller
         $this->requireRole('customer');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !$this->verifyCsrf()) {
             $this->setFlash('error', 'Yêu cầu không hợp lệ hoặc phiên làm việc đã hết hạn.');
-            $this->redirect('/DoAn_DienLanh/scr/request/mine');
+            $this->redirect(url('/request/mine'));
         }
 
         $result = $this->model('RequestModel')->cancelMine((int) $id, (int) $_SESSION['user']['id']);
@@ -359,7 +364,7 @@ class RequestController extends Controller
         } else {
             $this->setFlash('error', 'Không tìm thấy yêu cầu hoặc Quý khách không có quyền hủy yêu cầu này.');
         }
-        $this->redirect('/DoAn_DienLanh/scr/request/detail/' . (int) $id);
+        $this->redirect(url('/request/detail/' . (int) $id));
     }
 
     private function uploadedImages($files)

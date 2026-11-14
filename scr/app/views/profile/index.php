@@ -7,7 +7,7 @@
         <div class="profile-main-column">
             <section class="card profile-card profile-information-card">
                 <h2>Thông tin cá nhân</h2>
-                <form method="post" action="/DoAn_DienLanh/scr/profile/update">
+                <form method="post" action="<?= htmlspecialchars(url('/profile/update'), ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                     <div class="form-group">
                         <label for="profile-full-name">Họ tên</label>
@@ -33,7 +33,7 @@
             </section>
             <section class="card profile-card profile-password-card">
                 <h2>Đổi mật khẩu</h2>
-                <form method="post" action="/DoAn_DienLanh/scr/profile/changePassword">
+                <form method="post" action="<?= htmlspecialchars(url('/profile/changePassword'), ENT_QUOTES, 'UTF-8') ?>">
                     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($this->csrfToken(), ENT_QUOTES, 'UTF-8') ?>">
                     <div class="profile-password-fields">
                         <div class="form-group">

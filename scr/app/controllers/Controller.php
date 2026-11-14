@@ -23,6 +23,7 @@ class Controller {
         }
 
         extract($data, EXTR_SKIP);
+        $baseUrl = BASE_URL;
         $publicViewPrefixes = ['home/', 'service/', 'auth/', 'errors/'];
         $adminViewPrefixes = ['admin/', 'technician/', 'report/'];
         $isPublicView = false;
@@ -49,7 +50,7 @@ class Controller {
 
     public function requireLogin() {
         if (empty($_SESSION['user'])) {
-            $this->redirect('/DoAn_DienLanh/scr/auth/login');
+            $this->redirect(url('/auth/login'));
         }
 
         $userId = (int) ($_SESSION['user']['id'] ?? 0);
@@ -57,7 +58,7 @@ class Controller {
             $_SESSION = [];
             session_regenerate_id(true);
             $this->setFlash('error', 'Tài khoản đã bị khóa. Vui lòng liên hệ quản trị viên.');
-            $this->redirect('/DoAn_DienLanh/scr/auth/login');
+            $this->redirect(url('/auth/login'));
         }
     }
 
@@ -74,7 +75,7 @@ class Controller {
     }
 
     public function redirect($url) {
-        header('Location: ' . $url);
+        header('Location: ' . url($url));
         exit;
     }
 
@@ -199,11 +200,18 @@ class Controller {
         }
 
         if ($file['error'] !== UPLOAD_ERR_OK) {
+            if (in_array($file['error'], [UPLOAD_ERR_INI_SIZE, UPLOAD_ERR_FORM_SIZE], true)) {
+                throw new InvalidArgumentException('Ảnh vượt quá giới hạn tải lên của máy chủ. Mỗi ảnh tối đa 2MB.');
+            }
             throw new RuntimeException('Tải ảnh lên thất bại.');
         }
 
         if (!is_uploaded_file($file['tmp_name']) || $file['size'] > 2 * 1024 * 1024) {
-            throw new RuntimeException('Ảnh không hợp lệ hoặc vượt quá 2MB.');
+            throw new InvalidArgumentException('Ảnh không hợp lệ hoặc vượt quá 2MB.');
+        }
+        $uploadLimit = ini_size_bytes('upload_max_filesize');
+        if ($uploadLimit > 0 && $file['size'] > $uploadLimit) {
+            throw new InvalidArgumentException('Ảnh vượt quá giới hạn tải lên của máy chủ (' . ini_get('upload_max_filesize') . ').');
         }
 
         $fileInfo = new finfo(FILEINFO_MIME_TYPE);
@@ -215,12 +223,17 @@ class Controller {
         ];
 
         if (!isset($extensions[$mimeType])) {
-            throw new RuntimeException('Chỉ chấp nhận ảnh JPG, PNG hoặc WEBP.');
+            throw new InvalidArgumentException('Chỉ chấp nhận ảnh JPG, PNG hoặc WEBP.');
         }
 
         $uploadDirectory = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . 'uploads';
         if (!is_dir($uploadDirectory) && !mkdir($uploadDirectory, 0755, true) && !is_dir($uploadDirectory)) {
+            app_log('Unable to create the public uploads directory.');
             throw new RuntimeException('Không thể tạo thư mục lưu ảnh.');
+        }
+        if (!is_writable($uploadDirectory)) {
+            app_log('The public uploads directory is not writable.');
+            throw new RuntimeException('Thư mục lưu ảnh không có quyền ghi. Vui lòng liên hệ quản trị viên.');
         }
 
         $filename = bin2hex(random_bytes(16)) . '.' . $extensions[$mimeType];

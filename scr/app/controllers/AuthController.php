@@ -25,11 +25,11 @@ class AuthController extends Controller
                             unset($_SESSION['login_attempts'], $_SESSION['csrf_token']);
                             session_regenerate_id(true);
                             $_SESSION['user'] = $user;
-                            $this->redirect(($user['role'] ?? '') === 'admin'
-                                ? '/DoAn_DienLanh/scr/admin/dashboard'
-                                : (($user['role'] ?? '') === 'technician'
-                                    ? '/DoAn_DienLanh/scr/technician/dashboard'
-                                    : '/DoAn_DienLanh/scr/home'));
+                            $role = $user['role'] ?? '';
+                            $destination = $role === 'admin'
+                                ? url('/admin/dashboard')
+                                : ($role === 'technician' ? url('/technician/dashboard') : url('/home'));
+                            $this->redirect($destination);
                         }
 
                         $error = 'Email hoặc mật khẩu không chính xác.';
@@ -112,7 +112,7 @@ class AuthController extends Controller
                             unset($_SESSION['csrf_token']);
                             session_regenerate_id(true);
                             $_SESSION['user'] = $user;
-                            $this->redirect('/DoAn_DienLanh/scr/home');
+                            $this->redirect(url('/home'));
                         }
 
                         $error = 'Không thể tạo tài khoản. Email có thể đã được sử dụng.';
@@ -131,7 +131,7 @@ class AuthController extends Controller
             session_regenerate_id(true);
             session_destroy();
         }
-        header('Location: /DoAn_DienLanh/scr/home');
+        header('Location: ' . url('/home'));
         exit;
     }
 }

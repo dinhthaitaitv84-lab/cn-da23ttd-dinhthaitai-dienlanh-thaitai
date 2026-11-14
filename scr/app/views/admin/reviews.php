@@ -1,7 +1,7 @@
 <div class="page-head">
     <div><h1>Đánh giá khách hàng</h1><p>Theo dõi phản hồi và điểm đánh giá sau khi hoàn tất dịch vụ.</p></div>
 </div>
-<form class="filter-card" method="get" action="/DoAn_DienLanh/scr/admin/reviews">
+<form class="filter-card" method="get" action="<?= htmlspecialchars(url('/admin/reviews'), ENT_QUOTES, 'UTF-8') ?>">
     <div class="form-group">
         <label for="rating">Số sao</label>
         <select id="rating" name="rating">
@@ -32,7 +32,7 @@
         <?php foreach ($reviews as $review): ?>
             <tr>
                 <td><?= htmlspecialchars(date('d/m/Y H:i', strtotime($review['created_at'])), ENT_QUOTES, 'UTF-8') ?></td>
-                <td><a href="/DoAn_DienLanh/scr/admin/requestDetail/<?= (int) $review['request_id'] ?>"><?= htmlspecialchars($review['code'], ENT_QUOTES, 'UTF-8') ?></a></td>
+                <td><a href="<?= htmlspecialchars(url('/admin/requestDetail/' . (int) $review['request_id']), ENT_QUOTES, 'UTF-8') ?>"><?= htmlspecialchars($review['code'], ENT_QUOTES, 'UTF-8') ?></a></td>
                 <td><?= htmlspecialchars($review['customer_name'], ENT_QUOTES, 'UTF-8') ?></td>
                 <td><?= htmlspecialchars($review['technician_name'] ?? 'Chưa phân công', ENT_QUOTES, 'UTF-8') ?></td>
                 <td><span class="review-stars" aria-label="<?= (int) $review['rating'] ?> trên 5"><?= (int) $review['rating'] ?>/5</span></td>
